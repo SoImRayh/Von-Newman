@@ -1,107 +1,55 @@
-import { store, useAppSelector } from "@redux/index";
-import ReactLogo from "@assets/icons/react.svg";
-import { useState } from "react";
-import { incrementCounter, decrementCounter } from "@redux/reducers/count";
-import { incrementChar, decrementChar } from "@redux/reducers/characters";
+import Processador from "@/app/domain/Processador";
+import { Registrador } from "@components/Registrador/Registrador";
+import { useEffect, useState } from "react";
+import { ClockTime } from "@/app/domain/Clocks";
 
 const HomePage = () => {
-  const [show, setShow] = useState(true);
 
-  const state = useAppSelector((state) => state);
+  const [ciclo, setCiclo] = useState<number>(0)
+  const [processador, setprocessador] = useState(new Processador())
 
-  const increment = () => {
-    store.dispatch(incrementChar());
-    store.dispatch(incrementCounter(1));
-  };
 
-  const decrement = () => {
-    store.dispatch(decrementChar(1));
-    store.dispatch(decrementCounter());
-  };
+  function handleStart(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    setInterval(() => {
+      setCiclo(prev => prev+1)
+      }, ClockTime*4)
+  }
+
+  useEffect(() => {
+      processador.busca()
+      processador.decodifica()
+      processador.executa()
+  }, [ciclo])
+
+
 
   return (
-    <div
-      style={{ fontFamily: "Open Sans" }}
-      className="flex flex-col w-screen h-screen bg-black items-center justify-center p-12 text-white"
-    >
-      <img
-        onClick={() => window.electron.openUrl("https://reactjs.org/")}
-        src={ReactLogo}
-        className="mb-12 cursor-pointer"
-        height={69}
-        width={69}
-      />
-
-      <div className="font-bold mb-4">
-        React + Tailwind + Electron + Redux = ♥
+    <>
+      alo
+      <button onClick={(e) => handleStart(e)}>
+        start
+      </button>
+      <div>
+        {ciclo}
+      </div>
+      <Registrador nome={'PC'} value={processador.PC}/>
+      <Registrador nome={'IR'} value={processador.IR ? processador.IR.opcode : 0}/>
+      <Registrador nome={'MBR'} value={processador.MBR}/>
+      <Registrador nome={'MAR'} value={processador.MAR}/>
+      <Registrador nome={'IMM'} value={processador.IMM}/>
+      <div>
+        <Registrador nome={'L'} value={processador.L}/>
+        <Registrador nome={'E'} value={processador.E}/>
+        <Registrador nome={'G'} value={processador.G}/>
+      </div>
+      <div>
+        {processador.GPR.map((reg, index) =>
+          <Registrador nome={'R'+index.toString()} value={reg}/>)
+        }
       </div>
 
-      <div className="flex flex-row text-pink-300">
-        By&nbsp;
-        <div
-          className="cursor-pointer hover:text-blue-400 hover:underline"
-          onClick={() =>
-            window.electron.openUrl("https://github.com/saucesteals/")
-          }
-        >
-          <strong>Daniel</strong>
-        </div>
-        &nbsp;&&nbsp;
-        <div
-          className="cursor-pointer hover:text-blue-400 hover:underline"
-          onClick={() =>
-            window.electron.openUrl("https://github.com/fourwadu/")
-          }
-        >
-          <strong>Noah</strong>
-        </div>
-      </div>
-
-      {show ? (
-        <pre className="bg-blue-500 p-4 text-center rounded-md m-5">
-          {JSON.stringify(state)}
-        </pre>
-      ) : null}
-
-      <div className="cursor-pointer p-4" onClick={() => setShow(!show)}>
-        Click here to {show ? "hide" : "show"} your <strong>Redux</strong> store
-      </div>
-
-      <div className="flex flex-row text-pink-300">
-        <button className="mr-4" onClick={increment}>
-          Increment
-        </button>
-        <button onClick={decrement}>Decrement</button>
-      </div>
-
-      <div className="text-pink-300 p-2">
-        <button
-          onClick={async () => {
-            window.electron.openPath(await window.store.getPath());
-          }}
-        >
-          Open Store
-        </button>
-      </div>
-
-      <div className="flex justify-center w-72">
-        <button
-          className="mac-red mr-auto w-24 text-right"
-          onClick={window.electron.quit}
-        >
-          Exit / Quit
-        </button>
-        <button className="mac-orange w-24" onClick={window.electron.minimize}>
-          Minimize
-        </button>
-        <button
-          className="mac-green ml-auto w-24 text-left"
-          onClick={window.electron.maximize}
-        >
-          Maximize
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 
