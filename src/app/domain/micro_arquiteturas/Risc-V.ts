@@ -1,6 +1,8 @@
 import { Instruction } from "@/app/domain/interfaces/Instruction";
 import Processador from "@/app/domain/Processador";
 
+/*
+* todo implementar as intruções corretas da microarquitetura riscV*/
 export const riscV: Instruction[] = [
   {
     nome: 'soma',
