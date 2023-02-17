@@ -1,7 +1,8 @@
-import Processador from "@/app/domain/Processador";
+import Processador from "@/app/domain/modulos/processador/Processador";
 import { Registrador } from "@components/Registrador/Registrador";
 import { useEffect, useState } from "react";
 import { ClockTime } from "@/app/domain/Clocks";
+import {Link} from "react-router-dom";
 
 const HomePage = () => {
 
@@ -37,29 +38,15 @@ const HomePage = () => {
   * TODO embelezar a tela, por enquanto ainda só funcional*/
   return (
     <>
-      alo
-      <button onClick={(e) => handleStart(e)} className={'w-20 h-20 bg-green-500 hover:bg-green-600'}>
-        start
-      </button>
       <div>
-        {ciclo}
+        <div>
+          <h1> Simulador da Máquina de Von Neumman</h1>
+        </div>
+        <div>
+          <Link to={'/compilador'}>Compilador</Link>
+          <Link to={'/maquina'}>VM</Link>
+        </div>
       </div>
-      <Registrador nome={"PC"} value={processador.PC} />
-      <Registrador nome={"IR"} value={processador.IR ? processador.IR.opcode : 0} />
-      <Registrador nome={"MBR"} value={processador.MBR} />
-      <Registrador nome={"MAR"} value={processador.MAR} />
-      <Registrador nome={"IMM"} value={processador.IMM} />
-      <div>
-        <Registrador nome={"L"} value={processador.L} />
-        <Registrador nome={"E"} value={processador.E} />
-        <Registrador nome={"G"} value={processador.G} />
-      </div>
-      <div>
-        {processador.GPR.map((reg, index) =>
-          <Registrador nome={"R" + index.toString()} value={reg} />)
-        }
-      </div>
-
     </>
   );
 };

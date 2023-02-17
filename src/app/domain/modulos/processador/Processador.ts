@@ -1,9 +1,11 @@
 import { ClockTime, ramClock } from "@/app/domain/Clocks";
-import MemCache from "@/app/domain/MemCache";
-import MemRAM from "@/app/domain/MemRAM";
-import { riscV } from "@/app/domain/micro_arquiteturas/Risc-V";
 import { Instruction } from "@/app/domain/interfaces/Instruction";
+import MemRAM from "@/app/domain/modulos/memoria_ram/MemRAM";
+import {NEWMAN} from "@/app/domain/arquiteturas/Neumann";
 
+
+class MemCache {
+}
 
 /*
 * A classe processador sera instaciada com todos os registradores com o valor 0
@@ -81,7 +83,7 @@ class Processador {
   /*
   * GPR registradores de propósito-geral (GPRs) utilizados para manter temporariamente os operandos na ALU.
   * */
-  GPR:number[] = [0, 1, 2, 3, 4, 5, 6]
+  GPR: number[] = [0, 1, 2, 3, 4, 5, 6]
 
 
   /*
@@ -101,28 +103,48 @@ class Processador {
   constructor() {
     //this.cache = new MemCache();
     this.ram = new MemRAM(64);
-    this.inst = riscV
+    this.inst = NEWMAN
   }
 
 
-   busca() {
-    if (this.cache) {
-      console.log("tem cache");
-    } else {
-        this.MBR = this.ram.buscar(this.MAR)
+  async busca(): Promise<void> {
+    return new Promise(resolve => {
+      if (this.cache) {
+        console.log("tem cache");
+        resolve()
+      } else {
+        this.ram.buscar(this.MAR).then(palavra => {
+          this.MBR = palavra
+          resolve()
+        })
 
-    }
+      }
+
+    })
   }
 
-  decodifica() {
+  async decodifica(): Promise<number> {
+    return new Promise((resolve, reject) => {
+      if (this.inst.find(instruction => instruction.opcode == 0x00))
+        this.IR = this.inst.find(instruction => instruction.opcode == 0x00)
 
-    if (this.inst.find(instruction => instruction.opcode == 0x00))
-      this.IR = this.inst.find(instruction => instruction.opcode == 0x00)
+    })
   }
 
-  executa() {
-    if (this.IR)
-      this.IR.execute(this)
+  async executa(): Promise<void> {
+    return new Promise(async resolve => {
+      if (this.IR)
+        await this.IR.execute(this)
+      resolve()
+    })
+  }
+
+  async reiniciar(): Promise<void>{
+    return new Promise( resolve => {
+      this.PC = 0
+      resolve()
+      }
+    )
   }
 }
 
