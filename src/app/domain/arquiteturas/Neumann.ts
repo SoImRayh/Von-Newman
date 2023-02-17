@@ -608,3 +608,5 @@ export const NEWMAN: Instruction[] = [
       }
       },
 ]
+//Arquitetura adaptada do trabalho de AOC I
+// Conjunto de instruções do IAS
