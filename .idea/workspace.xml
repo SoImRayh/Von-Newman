@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="58fdd5d5-8b05-4f72-aaec-4f3368afe0da" name="Changes" comment="Adicionado a nova tela de Compilação, agora é possível fazer commits!" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="EditorConfigPreviewManager">
+    <editorConfig file="$PROJECT_DIR$/.editorconfig" previewFile="$PROJECT_DIR$/Anotações" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+        <option value="JavaScript File" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="742613fa-1762-42dd-93f4-4bf3df7e4c2d" />
+        <option name="url" value="https://github.com/SoImRayh/Von-Newman.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
+  <component name="ProjectId" id="2K9NPvshCIp07qEhT2deIRaZWGD" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/projetos/Von-Newman&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.JavaScript&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;F:\\projetos\\Von-Newman\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\projetos\Von-Newman\src\app\domain\modulos\processador" />
+      <recent name="D:\projetos\Von-Newman\src\app\domain\modulos\memoria_ram" />
+      <recent name="D:\projetos\Von-Newman\src\app\domain\modulos\memoria_cache" />
+      <recent name="D:\projetos\Von-Newman\src\app\domain\modulos" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.start">
+    <configuration name="async.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/async.js" working-dir="$PROJECT_DIR$/src">
+      <method v="2" />
+    </configuration>
+    <configuration name="make:win" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="make:win" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="publish:win" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="publish:win" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <package-manager value="npm" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.start" />
+        <item itemvalue="Node.js.async.js" />
+        <item itemvalue="npm.make:win" />
+        <item itemvalue="npm.publish:win" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="58fdd5d5-8b05-4f72-aaec-4f3368afe0da" name="Changes" comment="" />
+      <created>1673382818341</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1673382818341</updated>
+      <workItem from="1673382820908" duration="3052000" />
+      <workItem from="1673387908159" duration="667000" />
+      <workItem from="1673440968048" duration="34000" />
+      <workItem from="1673527806654" duration="7671000" />
+      <workItem from="1673540355621" duration="14052000" />
+      <workItem from="1673615962204" duration="6000" />
+      <workItem from="1674321636219" duration="20676000" />
+      <workItem from="1674420763767" duration="15000" />
+      <workItem from="1674473840234" duration="2155000" />
+      <workItem from="1674476039306" duration="2746000" />
+      <workItem from="1675957349886" duration="3300000" />
+      <workItem from="1676027277273" duration="30000" />
+      <workItem from="1676366905182" duration="15163000" />
+      <workItem from="1676397929521" duration="9844000" />
+      <workItem from="1676420565426" duration="1629000" />
+      <workItem from="1676459843005" duration="30478000" />
+      <workItem from="1676553279841" duration="1023000" />
+      <workItem from="1676554338726" duration="586000" />
+      <workItem from="1676564766581" duration="9895000" />
+      <workItem from="1676632856515" duration="1840000" />
+      <workItem from="1676999477415" duration="468000" />
+      <workItem from="1677000482150" duration="678000" />
+      <workItem from="1677003655909" duration="8284000" />
+      <workItem from="1677087443699" duration="300000" />
+      <workItem from="1677872265535" duration="158000" />
+      <workItem from="1678040013075" duration="6637000" />
+      <workItem from="1678046768293" duration="69000" />
+      <workItem from="1678046854784" duration="16000" />
+      <workItem from="1678046933205" duration="33000" />
+      <workItem from="1678046992697" duration="164000" />
+    </task>
+    <task id="LOCAL-00001" summary="implementacao generica da máquina, preciso implementar o conjunto de intrução riscV completamente.">
+      <created>1673548829364</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1673548829364</updated>
+    </task>
+    <task id="LOCAL-00002" summary="implementacao generica da máquina, preciso implementar o conjunto de intrução riscV completamente.">
+      <created>1673549585462</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1673549585462</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Adicionado a nova tela de Compilação, agora é possível fazer commits!">
+      <created>1676634497142</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1676634497142</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Adicionado a nova tela de Compilação, agora é possível fazer commits!">
+      <created>1676634534111</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1676634534111</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Adicionado a nova tela de Compilação, agora é possível fazer commits!">
+      <created>1677872287728</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1677872287728</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="implementacao generica da máquina, preciso implementar o conjunto de intrução riscV completamente." />
+    <MESSAGE value="implementacao generica da máquina, finalizar a implementações das instruções" />
+    <MESSAGE value="concertando a perca dos arquivos" />
+    <MESSAGE value="Adicionado a nova tela de Compilação, agora é possível fazer commits!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adicionado a nova tela de Compilação, agora é possível fazer commits!" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

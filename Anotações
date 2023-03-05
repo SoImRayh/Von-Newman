@@ -1,0 +1,2 @@
+em desenvolvimento será melhor criar um useState para cada registrador que apenas fazer o tracking do registrador com o
+setRegistrador()

@@ -1,0 +1,16 @@
+0;i;ld r0 92
+4;i;ld r1 96
+8;i;sub r0 r1
+c;i;ld r1 8e
+10;i;div r1 r0
+14;i;ld r2 8a
+18;i;mul r2 r1
+1c;i;ld r1 86
+20;i;add r1 r2
+24;i;st r1 82
+28;i;hlt
+86;d;20
+8a;d;3
+8e;d;4
+92;d;5
+96;d;3
