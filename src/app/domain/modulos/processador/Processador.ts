@@ -40,7 +40,7 @@ class Processador {
   * IR – Instruction Register – contém o opcode da instrução a ser executada.
   * O Ir será implementado como uma instãncia de Instruction para conter mais detalhes
   * */
-  IR: Instruction | null | undefined = null;
+  IR: Instruction | undefined ;
 
 
   /*
@@ -83,7 +83,7 @@ class Processador {
   /*
   * GPR registradores de propósito-geral (GPRs) utilizados para manter temporariamente os operandos na ALU.
   * */
-  GPR: number[] = [0, 1, 2, 3, 4, 5, 6]
+  GPR: number[]=[];
 
 
   /*
@@ -104,6 +104,9 @@ class Processador {
     //this.cache = new MemCache();
     this.ram = new MemRAM(64);
     this.inst = NEWMAN
+    for (let i = 0; i < 32; i++) {
+      this.GPR[i] = 0;
+    }
   }
 
 
@@ -113,7 +116,7 @@ class Processador {
         console.log("tem cache");
         resolve()
       } else {
-        this.ram.buscar(this.MAR).then(palavra => {
+        this.ram.buscar(this.PC).then(palavra => {
           this.MBR = palavra
           resolve()
         })
@@ -125,13 +128,16 @@ class Processador {
 
   async decodifica(): Promise<number> {
     return new Promise(async (resolve, reject) => {
-      const inst = this.inst.find(instruction => instruction.opcode == this.IR?.opcode)
-
-      if (!inst){
-        reject(1);
+      const opcode = this.MBR >>> 24;
+      const inst: Instruction | undefined = this.inst.find(instruction => instruction.opcode == opcode)
+      if (inst){
+        this.IR = inst
+        await this.IR.decode(this);
+        console.log(this.IR);
+        resolve(0)
       }else{
-        await inst.execute(this);
-        resolve(0);
+
+        reject(1);
       }
     })
   }
@@ -140,7 +146,7 @@ class Processador {
     return new Promise(async resolve => {
       if (this.IR)
         await this.IR.execute(this)
-      resolve()
+        resolve()
     })
   }
 

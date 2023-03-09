@@ -7,9 +7,12 @@ class MemRAM {
 
   view : Uint8Array
 
+  asArray: number[]
+
   constructor(byteSize: number) {
     this.buffer = new ArrayBuffer(byteSize);
     this.view = new Uint8Array(this.buffer);
+    this.asArray = Array.from(this.view);
   }
 
 

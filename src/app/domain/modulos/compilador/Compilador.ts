@@ -92,6 +92,7 @@ export class Compilador {
 
         //tenta encontrar um valor correspodente em uma tabela chave-valor
         const valor = char2DecTable.find( e => e.char === x.charAt(i));
+
         if(valor){
           /*
           * se a variavel val for igual a 0x0 (valor em que ela foi declarada) valor em que é esperado na primeira iteração

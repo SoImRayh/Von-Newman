@@ -421,7 +421,7 @@ export const NEWMAN: Instruction[] = [
         decode:async (processador: Processador): Promise<void> => {
           return new Promise( resolve => {
             processador.MAR = processador.MBR & 0x001fffff
-            processador.RO0 = (processador.MBR >> 21) & 0x00e
+            processador.RO0 = (processador.MBR >> 21) & 0x007
             resolve()
           })
         },

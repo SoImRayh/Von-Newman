@@ -9,6 +9,8 @@ import { NavigationButton } from "@components/buttons/NavigationButton";
 import { ProgramaCompilado } from "@/app/domain/interfaces/ProgramaCompilado";
 import {Simulate} from "react-dom/test-utils";
 import error = Simulate.error;
+import { MemCell } from "@components/memCell/MemCell";
+import { valueOf } from "electron-is-dev";
 
 
 
@@ -65,12 +67,7 @@ export function VMPage(){
 
 
 
-
   //====================================================================================================================
-
-  /*
-  * TODO embelezar a tela, por enquanto ainda só funcional
-  *  */
   return (
     <div className={'bg-zinc-800 min-h-screen'}>
       <NavigationButton path={'/'} text={'Home'}/>
@@ -111,6 +108,11 @@ export function VMPage(){
       <div className={'flex'}>
         {processador.GPR.map((reg, index) =>
           <Registrador nome={"R" + index.toString()} value={reg} key={index}/>)
+        }
+      </div>
+      <div className={'grid grid-cols-8'}>
+        {
+         processador.ram.asArray.map((valor, index) => <MemCell value={valor} key={index}/>)
         }
       </div>
 
