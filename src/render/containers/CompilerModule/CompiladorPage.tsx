@@ -53,7 +53,7 @@ export function CompiladorPage(){
         ////
 
         processador.decodifica().then().catch( response => {
-          console.log(processador.ram.view32)
+          console.log(processador.ram.view)
           modificador = 1
         })
         if (flag !=0 ){

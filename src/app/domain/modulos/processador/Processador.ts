@@ -124,10 +124,15 @@ class Processador {
   }
 
   async decodifica(): Promise<number> {
-    return new Promise((resolve, reject) => {
-      if (this.inst.find(instruction => instruction.opcode == 0x00))
-        this.IR = this.inst.find(instruction => instruction.opcode == 0x00)
+    return new Promise(async (resolve, reject) => {
+      const inst = this.inst.find(instruction => instruction.opcode == this.IR?.opcode)
 
+      if (!inst){
+        reject(1);
+      }else{
+        await inst.execute(this);
+        resolve(0);
+      }
     })
   }
 

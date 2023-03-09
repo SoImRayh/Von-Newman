@@ -9,7 +9,7 @@ class MemRAM {
 
   constructor(byteSize: number) {
     this.buffer = new ArrayBuffer(byteSize);
-    this.view = new Int32Array(this.buffer);
+    this.view = new Uint8Array(this.buffer);
   }
 
 
