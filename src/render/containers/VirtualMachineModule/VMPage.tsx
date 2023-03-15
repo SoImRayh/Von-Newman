@@ -1,16 +1,11 @@
 import Processador from "@/app/domain/modulos/processador/Processador";
-import { ClockTime } from "@/app/domain/Clocks";
-import { Compilador } from "@/app/domain/modulos/compilador/Compilador";
-import { NEWMAN } from "@/app/domain/arquiteturas/Neumann";
-import {  useNavigate } from "react-router-dom";
+
 import { Registrador } from "@components/Registrador/Registrador";
 import { useEffect, useState } from "react";
 import { NavigationButton } from "@components/buttons/NavigationButton";
-import { ProgramaCompilado } from "@/app/domain/interfaces/ProgramaCompilado";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 import { MemCell } from "@components/memCell/MemCell";
-import { valueOf } from "electron-is-dev";
+import { BrowserWindow } from "electron"
+
 
 
 
@@ -66,6 +61,8 @@ export function VMPage(){
   //====================================================== AREA DE TESTE =================================================
 
 
+  function createNewWindow(e: React.MouseEvent<HTMLButtonElement>) {
+  }
 
   //====================================================================================================================
   return (
@@ -77,6 +74,9 @@ export function VMPage(){
       </button>
       <button onClick={(e)=> handleReiniciar(e)}>
         reiniciar
+      </button>
+      <button onClick={(e)=> createNewWindow(e)}>
+        nova janela
       </button>
       <label className="relative inline-flex items-center cursor-pointer">
         <input type="checkbox" value="" className="sr-only peer" onChange={e => handleStatus(e)} />

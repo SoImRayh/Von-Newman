@@ -34,6 +34,8 @@ const createStores = (): void => {
 };
 
 const createWindow = (): void => {
+  const windows = new Set();
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     height: 720,
@@ -43,12 +45,14 @@ const createWindow = (): void => {
       nodeIntegration: false,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
+
+
     // to disable the top bar / frame completely uncomment the next line -
     // if you do this you will have to set up a css class to allow certain parts of your app to be "draggable"
 
     // frame: false
   });
-
+  windows.add(mainWindow)
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
