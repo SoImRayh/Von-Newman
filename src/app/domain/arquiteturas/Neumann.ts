@@ -52,8 +52,8 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador) : Promise<void> => {
         return new Promise( resolve => {
-          processador.RO0 = (processador.MBR >>> 21) & 0x00e
-          processador.RO1 = (processador.MBR >>> 18) & 0x001c
+          processador.RO0 = (processador.MBR >>> 21) & 0x00e;
+          processador.RO1 = (processador.MBR >>> 18) & 0x001c;
           resolve()
         })
       },
@@ -76,7 +76,7 @@ export const NEWMAN: Instruction[] = [
         decode:async (processador: Processador): Promise<void> => {
           return new Promise( resolve => {
               processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
-            processador.RO1 = (processador.MBR & 0x001c0000) >> 18
+            processador.RO1 = (processador.MBR & 0x001c0000) >> 18;
             resolve()
           })
         },
@@ -147,15 +147,28 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+          processador.RO1 = (processador.MBR & 0x001c0000) >> 18;
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
+          if(processador.GPR[processador.RO0] == processador.GPR[processador.RO1])
+          {
+            processador.E = 1;
           }
-        )
+          else if (processador.GPR[processador.RO0] < processador.GPR[processador.RO1])
+          {
+            processador.L = 1;
+          } 
+          else if (processador.GPR[processador.RO0] > processador.GPR[processador.RO1])
+          {
+            processador.G = 1;
+          }
+          processador.PC +=4;
+          resolve()
+        })
       },
     },
     {
@@ -168,15 +181,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+          processador.RO1 = (processador.MBR & 0x001c0000) >> 18;
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.GPR[processador.RO0] = processador.GPR[processador.RO1];
+          processador.PC +=4;
+          resolve()
+        })
       },
     },
     {
@@ -189,15 +204,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+          processador.RO1 = (processador.MBR & 0x001c0000) >> 18;
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.GPR[processador.RO0] & processador.GPR[processador.RO1];
+          processador.PC +=4;
+          resolve()
+        })
       },
     },
     {
@@ -210,15 +227,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+          processador.RO1 = (processador.MBR & 0x001c0000) >> 18;
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.GPR[processador.RO0] | processador.GPR[processador.RO1];
+          processador.PC +=4;
+          resolve()
+        })
       },
     },
     {
@@ -231,15 +250,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+          processador.RO1 = (processador.MBR & 0x001c0000) >> 18;
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.GPR[processador.RO0] ^ processador.GPR[processador.RO1];
+          processador.PC +=4;
+          resolve()
+        })
       },
     },
     {
@@ -252,15 +273,16 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          !processador.GPR[processador.RO1];
+          processador.PC +=4;
+          resolve()
+        })
       },
     },
     {
@@ -273,15 +295,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.MAR = (processador.MBR & 0x001fffff);
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
+          if (processador.E == 1){
+            processador.PC = processador.MAR;
           }
-        )
+          resolve()
+        })
       },
     },
     {
@@ -294,15 +318,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.MAR = (processador.MBR & 0x001fffff);
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
+          if (processador.E == 0){
+            processador.PC = processador.MAR;
           }
-        )
+          resolve()
+        })
       },
     },
     {
@@ -315,15 +341,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.MAR = (processador.MBR & 0x001fffff);
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
+          if (processador.L == 1){
+            processador.PC = processador.MAR;
           }
-        )
+          resolve()
+        })
       },
     },
     {
@@ -336,15 +364,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.MAR = (processador.MBR & 0x001fffff);
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
+          if (processador.E == 1 || processador.L == 1){
+            processador.PC = processador.MAR;
           }
-        )
+          resolve()
+        })
       },
     },
     {
@@ -357,15 +387,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.MAR = (processador.MBR & 0x001fffff);
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
+          if (processador.G == 1){
+            processador.PC = processador.MAR;
           }
-        )
+          resolve()
+        })
       },
     },
     {
@@ -378,15 +410,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.MAR = (processador.MBR & 0x001fffff);
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
+          if (processador.E == 1 || processador.G == 1){
+            processador.PC = processador.MAR;
           }
-        )
+          resolve()
+        })
       },
     },
     {
@@ -399,15 +433,15 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.MAR = (processador.MBR & 0x001fffff);
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.PC = processador.MAR;
+          resolve()
+        })
       },
     },
     {
@@ -470,15 +504,17 @@ export const NEWMAN: Instruction[] = [
     },
     decode: async (processador: Processador): Promise<void> => {
       return new Promise(resolve => {
-
-        }
-      )
+        processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+        processador.IMM = (processador.MBR & 0x001fffff)
+        resolve()
+      })
     },
     execute: async (processador: Processador): Promise<void> => {
       return new Promise(resolve => {
-
-        }
-      )
+        processador.GPR[processador.RO0] = processador.IMM;
+        processador.PC +=4;
+        resolve()
+      })
     },
   },
   {
@@ -491,15 +527,17 @@ export const NEWMAN: Instruction[] = [
     },
     decode: async (processador: Processador): Promise<void> => {
       return new Promise(resolve => {
-
-        }
-      )
+        processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+        processador.IMM = (processador.MBR & 0x001fffff)
+        resolve()
+      })
     },
     execute: async (processador: Processador): Promise<void> => {
       return new Promise(resolve => {
-
-        }
-      )
+        processador.GPR[processador.RO0] = processador.GPR[processador.RO0] + processador.IMM;
+        processador.PC +=4;
+        resolve()
+      })
     },
   },
     {
@@ -512,15 +550,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+          processador.IMM = (processador.MBR & 0x001fffff)
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.GPR[processador.RO0] = processador.GPR[processador.RO0] - processador.IMM;
+          processador.PC +=4;
+          resolve()
+        })
       }
       },
     {
@@ -533,15 +573,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+          processador.IMM = (processador.MBR & 0x001fffff)
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.GPR[processador.RO0] = processador.GPR[processador.RO0] * processador.IMM;
+          processador.PC +=4;
+          resolve()
+        })
       }
       },
     {
@@ -554,15 +596,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+          processador.IMM = (processador.MBR & 0x001fffff)
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.GPR[processador.RO0] = processador.GPR[processador.RO0] / processador.IMM;
+          processador.PC +=4;
+          resolve()
+        })
       }
       },
     {
@@ -575,15 +619,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+          processador.IMM = (processador.MBR & 0x001fffff)
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+            processador.GPR[processador.RO0] << processador.IMM;
+            processador.PC +=4;
+            resolve()
+        })
       }
       },
     {
@@ -596,15 +642,17 @@ export const NEWMAN: Instruction[] = [
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
+          processador.IMM = (processador.MBR & 0x001fffff)
+          resolve()
+        })
       },
       execute: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
-
-          }
-        )
+          processador.GPR[processador.RO0] >> processador.IMM;
+          processador.PC +=4;
+          resolve()
+      })
       }
       },
 ]
