@@ -16,10 +16,11 @@ export class Compilador {
 
 
   async compilar(){
+    console.log(this.codigo_fonte);
     return new Promise((resolve, reject) => {
       //separando e já fazendo o 'map' separando as linhas com o separador \n
       this.codigo_fonte.split('\n').map( comando => {
-        const splited = comando.split(';');
+        let splited = comando.split(';');
 
         //se for uma linha de instrução:
         if (splited[1] === 'i'){
@@ -86,6 +87,7 @@ export class Compilador {
   private parseHEX = (x :string): number =>{
     x = x.toLowerCase()
     let val: number = 0x0;
+        console.log(x);
     for (let i = 0; i < x.length; i++){
       ///se for uma letra entre a e f
       if (isNaN(parseInt(x.charAt(i)))){
@@ -101,7 +103,7 @@ export class Compilador {
           * */
           val === 0x0? val = val | valor.hex : val = (val << 0x4) | valor.hex
         }else {
-          throw new Error('não é uma letra que possa ser convertida para Hexadecial '+ x.charAt(i))
+          throw new Error('não é uma letra que possa ser convertida para Hexadecial \''+ x.charAt(i) + '\' iteracao: '+i)
         }
       }
       /*
