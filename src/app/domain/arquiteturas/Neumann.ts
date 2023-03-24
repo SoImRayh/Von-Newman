@@ -142,8 +142,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'Compara o conteudo dos registradores e preenche os registradores E, L, G',
         opcode: 0x06,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 2,
+        opr_tam: [3,3]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -176,8 +176,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'Move o conteudo de um registrador para o outro',
         opcode: 0x07,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 2,
+        opr_tam: [3,3]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -199,8 +199,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'Operador logico AND = E',
         opcode: 0x08,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 2,
+        opr_tam: [3,3]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -222,8 +222,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'Operador logico OR = OU',
         opcode: 0x09,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 2,
+        opr_tam: [3,3]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -245,8 +245,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'Operador logico XOR',
         opcode: 0xa,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 2,
+        opr_tam: [3,3]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -268,8 +268,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'Operador logico NOT, negação logica',
         opcode: 0x0b,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 1,
+        opr_tam: [3]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -290,8 +290,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'Jump if equal to: muda o endereço do Pc para X caso E = 1',
         opcode: 0x0c,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 1,
+        opr_tam: [21]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -313,8 +313,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'Jump if not equal to: Muda o endereço do PC para x caso E = 0',
         opcode: 0x0d,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 1,
+        opr_tam: [21]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -336,8 +336,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'Jump if lower than: Muda o endereço do PC para X caso L = 1',
         opcode: 0x0e,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 1,
+        opr_tam: [21]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -359,8 +359,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'Muda o valor de PC para X caso E = 1 ou L = 1',
         opcode: 0x0f,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 1,
+        opr_tam: [21]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -382,8 +382,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'Jump if greater than; Muda o valor de PC para X caso G = 1',
         opcode: 0x10,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 1,
+        opr_tam: [21]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -405,8 +405,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'Muda o valor de PC para X caso G = 1 ou E = 1',
         opcode: 0x11,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 1,
+        opr_tam: [21]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -428,8 +428,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'JUMP Muda o PC para o endereço de memoria X',
         opcode: 0x12,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 1,
+        opr_tam: [21]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -499,8 +499,8 @@ export const NEWMAN: Instruction[] = [
     descricao: 'O registrador informado recebe o imediato',
     opcode: 0x15,
     formato: {
-      opr_qtd: NaN,
-      opr_tam: []
+      opr_qtd: 2,
+      opr_tam: [3,21]
     },
     decode: async (processador: Processador): Promise<void> => {
       return new Promise(resolve => {
@@ -522,8 +522,8 @@ export const NEWMAN: Instruction[] = [
     descricao: 'O registrador informado recebe o imediato',
     opcode: 0x16,
     formato: {
-      opr_qtd: NaN,
-      opr_tam: []
+      opr_qtd: 2,
+      opr_tam: [3,21]
     },
     decode: async (processador: Processador): Promise<void> => {
       return new Promise(resolve => {
@@ -545,8 +545,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'O registrador informado e subtraido pelo imediato',
         opcode: 0x17,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 2,
+        opr_tam: [3,21]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -568,8 +568,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'O registrador informado e multiplicado pelo imediato',
         opcode: 0x18,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 2,
+        opr_tam: [3,21]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -591,8 +591,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'O registrador informado e dividido pelo imediato',
         opcode: 0x19,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 2,
+        opr_tam: [3,21]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -614,8 +614,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'desloca a palavra no registrador X em IMM bits à esquerda',
         opcode: 0x1a,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 2,
+        opr_tam: [3,21]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
@@ -637,8 +637,8 @@ export const NEWMAN: Instruction[] = [
         descricao: 'desloca a palavra no registrador X em IMM bits à direita',
         opcode: 0x1b,
       formato : {
-        opr_qtd: NaN,
-        opr_tam: []
+        opr_qtd: 2,
+        opr_tam: [3,21]
       },
       decode: async (processador: Processador): Promise<void> => {
         return new Promise(resolve => {
