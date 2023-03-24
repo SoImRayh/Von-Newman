@@ -8,7 +8,7 @@ export function MemCell(props: MemCellProps) {
   return (
     <>
       <div className={'px-1 py-2 text-white border border-white border-2 hover:bg-gray-500 text-center'}>
-        {props.value}
+        0x{props.value.toString(16)}
       </div>
     </>
   )
