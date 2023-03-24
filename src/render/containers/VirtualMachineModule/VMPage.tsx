@@ -7,18 +7,22 @@ import { MemCell } from "@components/memCell/MemCell";
 import { BrowserWindow } from "electron"
 import { Compilador } from "@/app/domain/modulos/compilador/Compilador";
 import { NEWMAN } from "@/app/domain/arquiteturas/Neumann";
+import * as process from "process";
+import MemRAM from "@/app/domain/modulos/memoria_ram/MemRAM";
 
 
 
 
 export function VMPage(){
 
+  const proc: Processador = new Processador();
   /*
   * react rooks
   * */
 
   const [ciclo, setCiclo] = useState<number>(0);
   const [processador, setprocessador] = useState<Processador>(new Processador());
+  const [ram, setRam] = useState<MemRAM>(new MemRAM(512))
   const [debug, setDebug] = useState<boolean>(false)
 
 
@@ -30,13 +34,22 @@ export function VMPage(){
     /*
     * variáveis
     * */
+      let flag = 0
     if(debug == false){
-
-          await processador.busca()
-          await processador.decodifica()
-          await processador.executa()
-          setCiclo(prev => prev+1)
-
+      while(flag == 0){
+        await processador.busca()
+        await processador.decodifica().then().catch( err =>{
+          flag = err
+        })
+        console.log(processador.IR);
+        await processador.executa()
+        setCiclo(prev => prev+1)
+        setprocessador(processador)
+        console.log(processador);
+        if (processador.IR?.nome == 'hlt'){
+          setDebug(true)
+        }
+      }
     } else {
       setCiclo(prev => prev+1)
     }
@@ -72,8 +85,11 @@ export function VMPage(){
       file = files[0];
       file.text().then( async (text) =>{
         compilador.codigo_fonte = text;
-        console.log(compilador);
         await compilador.compilar();
+        await ram.carregarPrograma(compilador.bytecode)
+        setRam(ram)
+        processador.ram = ram
+        console.log(processador);
       })
     }
   }
@@ -138,7 +154,7 @@ export function VMPage(){
         </span>
       </div>
       <div>
-        <div className={'grid grid-cols-2'}>
+        <div className={''}>
           <div>
             <div className={'flex'}>
               <Registrador nome={"MBR"} value={processador.MBR}/>
@@ -183,12 +199,12 @@ export function VMPage(){
           </div>
           {/*memória*/}
           <div>
-            <div className={'grid grid-cols-8'}>
-              {
-                processador.ram.asArray.map((valor, index) => <MemCell value={valor} key={index}/>)
-              }
-            </div>
           </div>
+        </div>
+        <div className={'grid grid-cols-8'}>
+          {
+            ram.asArray.map((valor, index) => <MemCell value={valor} key={index}/>)
+          }
         </div>
       </div>
     </div>

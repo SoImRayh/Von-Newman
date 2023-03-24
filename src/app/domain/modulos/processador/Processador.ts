@@ -116,10 +116,12 @@ class Processador {
         console.log("tem cache");
         resolve()
       } else {
-        this.ram.buscar(this.PC).then(palavra => {
-          this.MBR = palavra
-          resolve()
-        })
+        setTimeout(() => {
+          this.ram.buscar(this.PC).then(palavra => {
+            this.MBR = palavra
+            resolve()
+          })
+        }, ClockTime)
 
       }
 
@@ -130,10 +132,9 @@ class Processador {
     return new Promise(async (resolve, reject) => {
       const opcode = this.MBR >>> 24;
       const inst: Instruction | undefined = this.inst.find(instruction => instruction.opcode == opcode)
-      if (inst){
+      if (inst &&  inst.nome != 'hlt'){
         this.IR = inst
         await this.IR.decode(this);
-        console.log(this.IR);
         resolve(0)
       }else{
 

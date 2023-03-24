@@ -16,7 +16,7 @@ export class Compilador {
 
 
   async compilar(){
-    console.log(this.codigo_fonte);
+    this.codigo_fonte = this.codigo_fonte.replace('\r', '')
     return new Promise((resolve, reject) => {
       //separando e já fazendo o 'map' separando as linhas com o separador \n
       this.codigo_fonte.split('\n').map( comando => {
@@ -35,7 +35,7 @@ export class Compilador {
               valor: this.doBitWord(instrucao, instSplited)
             })
           }else{
-            throw new Error('instrução não encontrada na arquitetura!')
+            throw new Error('instrução não encontrada na arquitetura! nome: '+ instSplited[0])
           }
         }
         //se for uma linha de dado:
@@ -87,14 +87,12 @@ export class Compilador {
   private parseHEX = (x :string): number =>{
     x = x.toLowerCase()
     let val: number = 0x0;
-        console.log(x);
-    for (let i = 0; i < x.length; i++){
+    for (let i = 0; i < x.length ; i++){
       ///se for uma letra entre a e f
       if (isNaN(parseInt(x.charAt(i)))){
 
         //tenta encontrar um valor correspodente em uma tabela chave-valor
         const valor = char2DecTable.find( e => e.char === x.charAt(i));
-
         if(valor){
           /*
           * se a variavel val for igual a 0x0 (valor em que ela foi declarada) valor em que é esperado na primeira iteração

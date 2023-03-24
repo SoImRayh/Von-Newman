@@ -1,3 +1,3 @@
-export const ClockTime = 250
+export const ClockTime = 1000
 
 export const ramClock = 16

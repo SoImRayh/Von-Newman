@@ -53,6 +53,7 @@ class MemRAM {
         this.view[data.posicao+0x2] = byte2;
         this.view[data.posicao+0x3] = byte3;
 
+        this.asArray = Array.from(this.view)
         resolve()
       })
     })
