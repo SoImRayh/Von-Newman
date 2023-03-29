@@ -170,4 +170,330 @@ export const NEWMAN: Instruction[] = [
       )
     },
   },
+  {
+    nome: 'slli',
+    descricao: 'SLLI is a logical left shift (zeros are shifted into the lower bits)',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  {
+    nome: 'lui',
+    descricao: 'LUI (load upper immediate) places immediate value in the top 20 bits of the destination register rd',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  {
+    nome: 'auipc',
+    descricao: 'AUIPC (add upper immediate to pc) then places the result in register rd.',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  {
+    nome: 'sll',
+    descricao: 'SLL perform logical left',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  {
+    nome: 'srl',
+    descricao: 'SRL perform a logical right',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  {
+    nome: 'jal',
+    descricao: 'JAL (jump) stores the address of the instruction following the jump (pc+4) into register rd',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  {
+    nome: 'jalr',
+    descricao: 'JALR (jump and link register)',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  /*BEQ and BNE take the branch if registers rs1 and rs2
+  are equal or unequal respectively. */
+  {
+    nome: 'beq',
+    descricao: 'BEQ take the branch if registers rs1 and rs2 are equal or unequal respectively',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  /* BLT and BLTU take the branch if rs1 is less than rs2, using
+  signed and unsigned comparison respectively.*/
+  {
+    nome: 'blt',
+    descricao: 'BLT take the branch if rs1 is less than rs2',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  /*BGE and BGEU take the branch if rs1 is greater than or equal 
+  to rs2, using signed and unsigned comparison respectively.*/
+  {
+    nome: 'bge',
+    descricao: 'take the branch if rs1 is greater than or equal to rs2',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  {
+    nome: 'lw',
+    descricao: 'The LW instruction loads a 32-bit value from memory into rd',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  {
+    nome: 'lh',
+    descricao: 'LH loads a 16-bit value from memory, then sign-extends to 32-bits before storing in rd',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  {
+    nome: 'lhu',
+    descricao: 'LHU loads a 16-bit value from memory but then zero extends to 32-bits before storing in rd',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  {
+    nome: 'sw',
+    descricao: 'store 32-bit values from the low bits of register rs2 to memory',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  {
+    nome: 'sh',
+    descricao: 'store 16-bit values from the low bits of register rs2 to memory',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
+  {
+    nome: 'sb',
+    descricao: 'store 8-bit values from the low bits of register rs2 to memory',
+    opcode:0x00,
+    formato : {
+      opr_qtd: NaN,
+      opr_tam: []
+    },
+    decode: async (processador: Processador): Promise<void> => {
+      return new Promise( resolve => {
+        resolve()
+      })
+    },
+    execute: async (processador: Processador) : Promise<void> => {
+      return new Promise( resolve => {
+          resolve()
+        }
+      )
+    },
+  },
 ]
