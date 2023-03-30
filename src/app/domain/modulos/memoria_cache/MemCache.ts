@@ -1,3 +1,4 @@
+import * as path from "path";
 export class MemCache{
 
   buffer: ArrayBuffer;

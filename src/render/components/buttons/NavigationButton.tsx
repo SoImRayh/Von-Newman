@@ -8,7 +8,7 @@ interface NavigationButtonProps{
 export function NavigationButton(props : NavigationButtonProps){
   return (
 
-    <Link to={props.path} className={'border border-2 border-white hover:bg-white text-white hover:text-black px-3 py-2'}>
+    <Link to={props.path} className={'btn  btn-outline'}>
       {props.text}
     </Link>
   );
