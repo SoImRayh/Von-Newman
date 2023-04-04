@@ -8,6 +8,7 @@ import { Compilador } from "@/app/domain/modulos/compilador/Compilador";
 import { NEWMAN } from "@/app/domain/arquiteturas/Neumann";
 import MemRAM from "@/app/domain/modulos/memoria_ram/MemRAM";
 import { NavBar } from "@components/navbar/NavBar";
+import memRAM from "@/app/domain/modulos/memoria_ram/MemRAM";
 
 
 
@@ -15,7 +16,6 @@ import { NavBar } from "@components/navbar/NavBar";
 
 export function VMPage(){
 
-  const proc: Processador = new Processador();
   /*
   * react rooks
   * */
@@ -30,38 +30,52 @@ export function VMPage(){
   * Quando clicar em start é iniciado um timer que vai a cada ciclo de clock incrementar o numero do cliclo de clock
   * que é usado como flag para alterar os valores dos registradores no processador
   * */
-    async function handleStart(e: React.MouseEvent<HTMLButtonElement>) {
-    /*
-    * variáveis
-    * */
+    async function handleStart(e: React.MouseEvent<HTMLButtonElement>){
+      setprocessador(processador)
       let flag = 0
-    if(debug == false){
-      while(flag == 0){
+      if(debug == true){
+        console.log('debug ativado');
+        await incrementarCiclo()
+      } else {
+        while(flag == 0){
+          flag = await fazerCiclo()
+          setprocessador(processador)
+          setCiclo(prev => prev+1)
+          console.log(processador);
+        }
+      }
+    }
+  async function incrementarCiclo(){
+    await fazerCiclo()
+    setCiclo(prev => prev+1)
+  }
+
+    async function fazerCiclo(){
+
+        let flag: number=0;
+
         await processador.busca()
+
         await processador.decodifica().then().catch( err =>{
           flag = err
         })
+
         await processador.executa()
-        setCiclo(prev => prev+1)
+
         setprocessador(processador)
         if (processador.IR?.nome == 'hlt'){
-          setDebug(true)
+          return 1
         }
-      }
-    } else {
-      setCiclo(prev => prev+1)
+         return flag
     }
-  }
 
 
 
-  /*
-  * React hook que usar o state ciclo para iniciar um novo ciclo de clock no processador
-  * */
+
 
 
   function handleStatus(checked: React.ChangeEvent<HTMLInputElement>) {
-    setDebug(!checked.target.checked)
+    setDebug(checked.target.checked)
   }
 
   function handleReiniciar(e: React.MouseEvent<HTMLButtonElement>) {
@@ -73,34 +87,33 @@ export function VMPage(){
   //====================================================== AREA DE TESTE =================================================
   const compilador: Compilador = new Compilador(NEWMAN);
 
-  function createNewWindow(e: React.MouseEvent<HTMLButtonElement>) {
-  }
 
-  function handleInputchange(event: React.ChangeEvent<HTMLInputElement>) {
-    let file : File;
+  async function handleFile(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
-    if ( files ){
-      file = files[0];
-      file.text().then( async (text) =>{
-        compilador.codigo_fonte = text;
-        await compilador.compilar();
-        await ram.carregarPrograma(compilador.bytecode)
-        setRam(ram)
-        processador.ram = ram
-        console.log(processador);
-      })
+
+    if (files){
+      const file = files[0]
+
+      //carregar o texto e colocar no compilador
+      const text = await file.text()
+      compilador.codigo_fonte = text
+      await compilador.compilar()
+
+      await ram.carregarPrograma(compilador.bytecode);
+      setRam(ram)
+      console.log(ram);
+
+      processador.ram = ram
+      setprocessador(processador)
     }
+
   }
 
   //====================================================================================================================
   return (
 
-    <div className={'bg-zinc-800 min-h-screen'}>
+    <div className={'min-h-screen'}>
       <NavBar/>
-      <div className={'flex px-3'}>
-        <NavigationButton path={'/'} text={'Home'}/>
-        <NavigationButton path={'/compilador'} text={'compilador'}/>
-      </div>
       <div className={'flex gap-3 mt-3'}>
         <button
           onClick={(e) => handleStart(e)}
@@ -113,27 +126,16 @@ export function VMPage(){
         >
           reiniciar
         </button>
-        <button onClick={(e)=> createNewWindow(e)}
-                className={'btn btn-primary'}
-        >
-          carregar programa
-        </button>
-        <div>
-          <label
-            htmlFor="inputfile"
-            className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
-          >Escolha o programa</label
-          >
-          <input type={'file'} className={'file-input w-full max-w-xs'}/>
+        <div className={'flex items-center'}>
+          <input type="checkbox" className={'toggle toggle-primary'} accept={'.vm'} onChange={e => handleStatus(e)}/>
+          <span className="ml-3 text-sm font-mono font-medium text-gray-900 dark:text-gray-300">debug</span>
+        </div>
+        <div className={'flex w-full justify-end'}>
+          <input type={'file'} onChange={(event) => handleFile(event)} placeholder={'alos'} className={'file-input file-input-md w-full max-w-xs mr-20'}/>
         </div>
       </div>
-      <label className="relative inline-flex items-center cursor-pointer">
-        <input type="checkbox" value="" className="sr-only peer" onChange={e => handleStatus(e)} />
-        <input type="checkbox" className={'toggle toggle-primary'} />
-        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">debug</span>
-      </label>
       <div>
-        <span className={'countdown font-mono text-6xl'}>
+        <span className={'countdown font-mono text-2xl'}>
           estamos no ciclo de máquina: { ciclo }
         </span>
       </div>
@@ -181,14 +183,13 @@ export function VMPage(){
               </div>
             </div>
           </div>
-          {/*memória*/}
-          <div>
-          </div>
         </div>
-        <div className={'grid grid-cols-8'}>
-          {
-            ram.asArray.map((valor, index) => <MemCell value={valor} key={index}/>)
-          }
+        <div className={'flex'}>
+          <div className={'grid grid-cols-12'}>
+            {
+              ram.asArray.map((valor, index) => <MemCell value={valor} position={index} key={index}/>)
+            }
+          </div>
         </div>
       </div>
     </div>

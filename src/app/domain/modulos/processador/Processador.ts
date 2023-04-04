@@ -132,7 +132,7 @@ class Processador {
     return new Promise(async (resolve, reject) => {
       const opcode = this.MBR >>> 24;
       const inst: Instruction | undefined = this.inst.find(instruction => instruction.opcode == opcode)
-      if (inst &&  inst.nome != 'hlt'){
+      if (inst){
         this.IR = inst
         await this.IR.decode(this);
         resolve(0)

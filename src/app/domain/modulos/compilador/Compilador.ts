@@ -48,7 +48,7 @@ export class Compilador {
         }
         // caso nao seja nem dado nem instrução:
         else{
-          reject('nao é nem instrução nem dado')
+          reject('nao é nem instrução nem dado caracter: '+ splited[1])
         }
       })
     })
