@@ -8,7 +8,7 @@ cover the ECALL/EBREAK instructions with a single SYSTEM hardware instruction th
 ways traps and might be able to implement the FENCE instruction as a NOP, reducing base
 instruction count to 38 total. */
 
-export const NEWMAN: Instruction[] = [
+export const RISCV: Instruction[] = [
   {
     nome: 'addi',
     descricao: 'adds the sign-extended 12-bit immediate to register rs1',
