@@ -69,15 +69,15 @@ class Processador {
   /*
   * L = lower than
   * */
-  L: number = NaN;
+  L: number = 0;
   /*
   * E = euqual to
   * */
-  E: number = NaN;
+  E: number = 0;
   /*
   * G = greater than
   * */
-  G: number = NaN;
+  G: number = 0;
 
 
   /*
