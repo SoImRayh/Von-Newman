@@ -3,7 +3,7 @@ import MemRAM from "@/app/domain/modulos/memoria_ram/MemRAM";
 
 type Props = {
   size: number;
-  ram?: MemRAM
+  ram?: MemRAM;
 }
 export class CacheAcessoDireto implements MemoriaCache {
 
@@ -26,9 +26,11 @@ export class CacheAcessoDireto implements MemoriaCache {
     }
 
   }
-  buscar(adress: number): Promise<number> {
+  buscar(address: number): Promise<number> {
     return new Promise( (resolve) => {
       //TODO implementar a busca
+      //if adress está na cache, _totalDeBuscas++ e _totaldeHit++
+      //else _totalDeBuscas++ e _totalDeHits++
       resolve(0)
     });
   }
@@ -42,7 +44,7 @@ export class CacheAcessoDireto implements MemoriaCache {
   }
 
   //TODO remover assim que acabar as implementações
-  salvar(adress: number, value: number): void {
+  salvar(address: number, value: number): void {
   }
 
 }
