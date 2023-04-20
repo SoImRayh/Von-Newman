@@ -7,7 +7,7 @@ class MemCache {
     // Implementar posteriormente 
 }
 
-class ProcessadorRiscV {
+class RiscV {
 
     MBR: number = 0;
 
@@ -89,7 +89,7 @@ class ProcessadorRiscV {
     
       async decodifica(): Promise<number> {
         return new Promise(async (resolve, reject) => {
-          const opcode = this.MBR >>> 24;
+          const opcode = this.MBR >>> 25;
           const inst: Instruction | undefined = this.inst.find(instruction => instruction.opcode == opcode)
           if (inst &&  inst.nome != 'hlt'){
             this.IR = inst
@@ -120,4 +120,4 @@ class ProcessadorRiscV {
 
 }
 
-export default ProcessadorRiscV
+export default RiscV

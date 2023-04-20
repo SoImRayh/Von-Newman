@@ -1,5 +1,5 @@
 import { Instruction } from "@/app/domain/interfaces/Instruction";
-import Processador from "@/app/domain/modulos/processador/Processador";
+import RiscV from "@/app/domain/modulos/processador/ProcessadorRisV";
 
 /* RV32I was designed to be sufficient to form a compiler target and to support modern operating
 system environments. The ISA was also designed to reduce the hardware required in a minimal
@@ -7,6 +7,15 @@ implementation. RV32I contains 40 unique instructions, though a simple implement
 cover the ECALL/EBREAK instructions with a single SYSTEM hardware instruction that al-
 ways traps and might be able to implement the FENCE instruction as a NOP, reducing base
 instruction count to 38 total. */
+
+/* 
+  Type R 0~6 opcode | 7~11 RD           12~14 funct3 | 15~19 RS1 | 20~24 RS2
+  Type I 0~6 opcode | 7~11 RD           12~14 funct3 | 15~19 RS1 | IMM[11:10]
+  Type S 0~6 opcode | 7~11 IMM[4:0]     12~14 funct3 | 15~19 RS1 | 20~24 RS2
+  Type B 0~6 opcode | 7~11 IMM[4:1|11]  12~14 funct3 | 15~19 RS1 | 20~24 RS2
+  Type U 0~6 opcode | 7~11 RD           12~14 funct3 | 15~19 RS1 | IMM
+  Type J 0~6 opcode | 7~11 RD           12~14 funct3 | 15~19 RS1 | IMM
+*/
 
 export const RISCV: Instruction[] = [
   {
@@ -17,17 +26,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: 4,
       opr_tam: [5,3,5,12]
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
-        processador.RO0 = (processador.MBR >>> 21) & 0x00e;
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.IMM = (RiscV.MBR & 0xfff00000) >> 7;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.XLEN[RiscV.RD] = RiscV.XLEN[RiscV.RS1] + RiscV.XLEN[RiscV.IMM]
+        resolve()
+      })
     },
   },
   {
@@ -38,16 +49,23 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x01f00000) >> 20;
+        RiscV.IMM = (RiscV.MBR & 0xfff00000) >> 7;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
+        if (RiscV.RS1 < RiscV.IMM) {
+          RiscV.XLEN[RiscV.RD] = 0x01;
+        } else {
+          RiscV.XLEN[RiscV.RD] = 0x00;
         }
-      )
+        resolve()
+      })
     },
   },
   {
@@ -58,16 +76,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RS1 = (RiscV.MBR & 0x00f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x1f00000) >> 20;
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.XLEN[RiscV.RD] = (RiscV.XLEN[RiscV.RS1] + RiscV.XLEN[RiscV.RS2])
+        resolve()
+      })
     },
   },
   {
@@ -78,16 +99,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RS1 = (RiscV.MBR & 0x00f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x1f00000) >> 20;
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.XLEN[RiscV.RD] = (RiscV.XLEN[RiscV.RS1] & RiscV.XLEN[RiscV.RS2])
+        resolve()
+      })
     },
   },
   {
@@ -98,16 +122,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RS1 = (RiscV.MBR & 0x00f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x1f00000) >> 20;
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.XLEN[RiscV.RD] = (RiscV.XLEN[RiscV.RS1] | RiscV.XLEN[RiscV.RS2])
+        resolve()
+      })
     },
   },
   {
@@ -118,16 +145,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RS1 = (RiscV.MBR & 0x00f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x1f00000) >> 20;
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.XLEN[RiscV.RD] = (RiscV.XLEN[RiscV.RS1] ^ RiscV.XLEN[RiscV.RS2])
+        resolve()
+      })
     },
   },
   {
@@ -138,16 +168,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x01f00000) >> 20;
+        RiscV.IMM = (RiscV.MBR & 0xfff00000) >> 7;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.XLEN[RiscV.RD] = RiscV.XLEN[RiscV.RS1] >> RiscV.XLEN[RiscV.IMM]
+        resolve()
+      })
     },
   },
   {
@@ -158,16 +191,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x01f00000) >> 20;
+        RiscV.IMM = (RiscV.MBR & 0xfff00000) >> 7;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.XLEN[RiscV.RD] = RiscV.XLEN[RiscV.RS1] >> RiscV.XLEN[RiscV.IMM]
+        resolve()
+      })
     },
   },
   {
@@ -178,16 +214,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x01f00000) >> 20;
+        RiscV.IMM = (RiscV.MBR & 0xfff00000) >> 7;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.XLEN[RiscV.RD] = RiscV.XLEN[RiscV.RS1] << RiscV.XLEN[RiscV.IMM]
+        resolve()
+      })
     },
   },
   {
@@ -198,16 +237,18 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.IMM = (RiscV.MBR & 0xfffff000) >> 12;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.XLEN[RiscV.RD] = RiscV.IMM;
+        resolve()
+      })
     },
   },
   {
@@ -218,16 +259,18 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.IMM = (RiscV.MBR & 0xfffff000) >> 12;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.XLEN[RiscV.RD] = RiscV.IMM;
+        resolve()
+      })
     },
   },
   {
@@ -238,16 +281,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x00f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x1f00000) >> 20;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.XLEN[RiscV.RD] = RiscV.XLEN[RiscV.RS1] << RiscV.XLEN[RiscV.RS2]
+        resolve()
+      })
     },
   },
   {
@@ -258,16 +304,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x00f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x1f00000) >> 20;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.XLEN[RiscV.RD] = RiscV.XLEN[RiscV.RS1] << RiscV.XLEN[RiscV.RS2]
+        resolve()
+      })
     },
   },
   {
@@ -278,16 +327,17 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.IMM = (RiscV.MBR & 0xfffff000) >> 12;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
           resolve()
-        }
-      )
+      })
     },
   },
   {
@@ -298,16 +348,18 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.IMM = (RiscV.MBR & 0xfff00000) >> 7;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
           resolve()
-        }
-      )
+      })
     },
   },
   /*BEQ and BNE take the branch if registers rs1 and rs2
@@ -320,16 +372,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x01f00000) >> 20;
+        RiscV.IMM = (RiscV.MBR & 0xfe000000) >> 25;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
           resolve()
-        }
-      )
+      })
     },
   },
   /* BLT and BLTU take the branch if rs1 is less than rs2, using
@@ -342,16 +397,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x01f00000) >> 20;
+        RiscV.IMM = (RiscV.MBR & 0xfe000000) >> 25;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
           resolve()
-        }
-      )
+      })
     },
   },
   /*BGE and BGEU take the branch if rs1 is greater than or equal 
@@ -364,16 +422,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x01f00000) >> 20;
+        RiscV.IMM = (RiscV.MBR & 0xfe000000) >> 25;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
           resolve()
-        }
-      )
+      })
     },
   },
   {
@@ -384,16 +445,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.IMM = (RiscV.MBR & 0xfff00000) >> 7;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.RD = RiscV.IMM
+        resolve()
+      })
     },
   },
   {
@@ -404,16 +468,18 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.IMM = (RiscV.MBR & 0xfff00000) >> 7;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
           resolve()
-        }
-      )
+      })
     },
   },
   {
@@ -424,16 +490,18 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
         resolve()
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.IMM = (RiscV.MBR & 0xfff00000) >> 7;
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
           resolve()
-        }
-      )
+      })
     },
   },
   {
@@ -444,16 +512,23 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x01f00000) >> 20;
+        RiscV.IMM = (RiscV.MBR & 0xfe000000) >> 25;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-          resolve()
-        }
-      )
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x01f00000) >> 20;
+        RiscV.IMM = (RiscV.MBR & 0xfe000000) >> 25;
+        resolve()
+      })
     },
   },
   {
@@ -464,16 +539,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x01f00000) >> 20;
+        RiscV.IMM = (RiscV.MBR & 0xfe000000) >> 25;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
           resolve()
-        }
-      )
+      })
     },
   },
   {
@@ -484,16 +562,19 @@ export const RISCV: Instruction[] = [
       opr_qtd: NaN,
       opr_tam: []
     },
-    decode: async (processador: Processador): Promise<void> => {
+    decode: async (RiscV: RiscV): Promise<void> => {
       return new Promise( resolve => {
+        RiscV.RD = (RiscV.MBR & 0x00f80) >> 7;
+        RiscV.RS1 = (RiscV.MBR & 0x000f8000) >> 15;
+        RiscV.RS2 = (RiscV.MBR & 0x01f00000) >> 20;
+        RiscV.IMM = (RiscV.MBR & 0xfe000000) >> 25;
         resolve()
       })
     },
-    execute: async (processador: Processador) : Promise<void> => {
+    execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
           resolve()
-        }
-      )
+      })
     },
   },
 ]
