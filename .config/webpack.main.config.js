@@ -8,12 +8,18 @@ module.exports = {
    */
   entry: "./src/main.ts",
   // Put your normal webpack config below here
+  target: 'electron-renderer',
 
   module: {
     rules: require("./webpack.rules"),
   },
   resolve: {
     extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
+    fallback: {
+      "fs": false,
+      "os": false,
+      "path": false,
+    }
   },
 
   plugins: plugins,

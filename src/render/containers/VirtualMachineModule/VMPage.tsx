@@ -2,19 +2,20 @@ import Processador from "@/app/domain/modulos/processador/Processador";
 
 import { Registrador } from "@components/Registrador/Registrador";
 import { useEffect, useState } from "react";
-import { NavigationButton } from "@components/buttons/NavigationButton";
 import { MemCell } from "@components/memCell/MemCell";
 import { Compilador } from "@/app/domain/modulos/compilador/Compilador";
 import { NEWMAN } from "@/app/domain/arquiteturas/Neumann";
-import MemRAM from "@/app/domain/modulos/memoria_ram/MemRAM";
+import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
 import { NavBar } from "@components/navbar/NavBar";
-import memRAM from "@/app/domain/modulos/memoria_ram/MemRAM";
+import { ipcRenderer } from "electron";
+
 
 
 
 
 
 export function VMPage(){
+  ipcRenderer.send('loadConfigFile', 'alooo')
 
   /*
   * react rooks

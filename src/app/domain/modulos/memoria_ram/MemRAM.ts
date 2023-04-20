@@ -1,7 +1,7 @@
 import { ramClock } from "@/app/domain/Clocks";
 import { ProgramaCompilado } from "@/app/domain/interfaces/ProgramaCompilado";
 
-class MemRAM {
+export class MemRAM {
 
   buffer : ArrayBuffer
 
@@ -60,4 +60,4 @@ class MemRAM {
   }
 }
 
-export default MemRAM
+
