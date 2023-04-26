@@ -24,21 +24,28 @@ export class CacheMapeamentoDireto implements MemoriaCache {
   constructor(qtd_linhas: number, tam_bloco: number, ram?: MemRAM) {
 
     if(ram){
+
       this.ram = ram;
       this._tam_bloco = tam_bloco
       this._qtd_linhas = qtd_linhas
-      this.linhas = new Array<Linha>(qtd_linhas).fill({tag: 0x0, bloco: []})
+      this.linhas = new Array<Linha>(qtd_linhas).fill({tag: 0x0, bloco: [0,0,0,0]})
+
     }else {
+
       this.ram = new MemRAM(64)
       this._tam_bloco = tam_bloco
       this._qtd_linhas = qtd_linhas
-      this.linhas = new Array<Linha>(qtd_linhas).fill({tag: 0x0, bloco: []})
+      this.linhas = new Array<Linha>(qtd_linhas).fill({tag: 0x0, bloco: [0,0,0,0]})
+
     }
 
   }
   buscar(address: number): Promise<number> {
-    return new Promise( (resolve) => {
 
+    this.linhas.forEach(linha => {
+      console.log(linha)
+    })
+    return new Promise( (resolve) => {
 
       const bloco: number = this.calcularBloco( address )
       const pos_palavra_no_bloco: number =
@@ -48,7 +55,7 @@ export class CacheMapeamentoDireto implements MemoriaCache {
 
       if(this.calctag(address) == bloco_TARGET.tag){
         this._totalDeHit++
-        return bloco_TARGET.bloco[pos_palavra_no_bloco]
+        resolve(bloco_TARGET.bloco[pos_palavra_no_bloco])
       }else {
 
       }
