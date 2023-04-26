@@ -1,10 +1,10 @@
 import { ClockTime, ramClock } from "@/app/domain/Clocks";
 import { Instruction } from "@/app/domain/interfaces/Instruction";
-import MemRAM from "@/app/domain/modulos/memoria_ram/MemRAM";
+import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
 import {RISCV} from "@/app/domain/arquiteturas/Risc-V";
 
 class MemCache {
-    // Implementar posteriormente 
+    // Implementar posteriormente
 }
 
 class RiscV {
@@ -18,7 +18,7 @@ class RiscV {
     PC: number = 0;
 
     // Regustradores de proposito geral X0 = 0 X1 a X31 são acessaveis
-    
+
     XLEN: number[]=[];
 
     // IMM registrador imediato
@@ -40,7 +40,7 @@ class RiscV {
     //L = lower than
 
     L: number = NaN;
-    
+
     //E = euqual to
 
     E: number = NaN;
@@ -81,12 +81,12 @@ class RiscV {
                 resolve()
               })
             }, ClockTime)
-    
+
           }
-    
+
         })
       }
-    
+
       async decodifica(): Promise<number> {
         return new Promise(async (resolve, reject) => {
           const opcode = this.MBR >>> 25;
@@ -96,12 +96,12 @@ class RiscV {
             await this.IR.decode(this);
             resolve(0)
           }else{
-    
+
             reject(1);
           }
         })
       }
-    
+
       async executa(): Promise<void> {
         return new Promise(async resolve => {
           if (this.IR)
@@ -109,7 +109,7 @@ class RiscV {
             resolve()
         })
       }
-    
+
       async reiniciar(): Promise<void>{
         return new Promise( resolve => {
           this.PC = 0

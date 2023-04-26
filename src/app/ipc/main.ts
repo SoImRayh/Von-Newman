@@ -1,5 +1,4 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import * as fs from "fs";
 
 ipcMain.on("quit-app", () => {
   app.quit();
@@ -21,16 +20,6 @@ ipcMain.on("relaunch-app", () => {
   app.relaunch();
   app.exit(0);
 });
-
-ipcMain.on('loadConfigFile', (event, text: string) => {
-  fs.writeFile('./save.config.json', text, (err) => {
-    if (err){
-      console.log('deu erro')
-    }
-  })
-
-  fs.appendFile
-})
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them in main.ts.

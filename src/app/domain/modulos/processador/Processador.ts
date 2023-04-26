@@ -1,6 +1,6 @@
 import { ClockTime, ramClock } from "@/app/domain/Clocks";
 import { Instruction } from "@/app/domain/interfaces/Instruction";
-import MemRAM from "@/app/domain/modulos/memoria_ram/MemRAM";
+import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
 import {NEWMAN} from "@/app/domain/arquiteturas/Neumann";
 
 

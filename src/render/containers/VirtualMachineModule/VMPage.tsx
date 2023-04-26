@@ -7,7 +7,6 @@ import { Compilador } from "@/app/domain/modulos/compilador/Compilador";
 import { NEWMAN } from "@/app/domain/arquiteturas/Neumann";
 import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
 import { NavBar } from "@components/navbar/NavBar";
-import { ipcRenderer } from "electron";
 
 
 
@@ -15,7 +14,6 @@ import { ipcRenderer } from "electron";
 
 
 export function VMPage(){
-  ipcRenderer.send('loadConfigFile', 'alooo')
 
   /*
   * react rooks

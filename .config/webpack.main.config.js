@@ -8,18 +8,24 @@ module.exports = {
    */
   entry: "./src/main.ts",
   // Put your normal webpack config below here
-  target: 'electron-renderer',
 
   module: {
     rules: require("./webpack.rules"),
   },
   resolve: {
-    extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
     fallback: {
       "fs": false,
-      "os": false,
+      "tls": false,
+      "net": false,
       "path": false,
-    }
+      "zlib": false,
+      "http": false,
+      "https": false,
+      "stream": false,
+      "crypto": false,
+      "crypto-browserify": require.resolve('crypto-browserify'), //if you want to use this module also don't forget npm i crypto-browserify
+    },
+    extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
   },
 
   plugins: plugins,

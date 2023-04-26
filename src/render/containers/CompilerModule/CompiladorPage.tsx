@@ -4,8 +4,7 @@ import { Compilador } from "@/app/domain/modulos/compilador/Compilador";
 import { NEWMAN } from "@/app/domain/arquiteturas/Neumann";
 import { useState } from "react";
 import Processador from "@/app/domain/modulos/processador/Processador";
-import MemRAM from "@/app/domain/modulos/memoria_ram/MemRAM";
-import * as fs from "fs";
+import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
 
 
 
