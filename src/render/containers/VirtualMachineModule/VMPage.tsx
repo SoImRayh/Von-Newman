@@ -9,6 +9,7 @@ import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
 import { NavBar } from "@components/navbar/NavBar";
 import { MemoriaCache } from "@/app/domain/modulos/memoria_cache/MemoriaCache";
 import { CacheMapeamentoDireto } from "@/app/domain/modulos/memoria_cache/imp/CacheMapeamentoDireto";
+import { CacheMapeamentoAssociativo } from "@/app/domain/modulos/memoria_cache/imp/CacheMapeamentoAssociativo";
 
 
 
@@ -32,11 +33,7 @@ export function VMPage(){
   * que é usado como flag para alterar os valores dos registradores no processador
   * */
     async function handleStart(e: React.MouseEvent<HTMLButtonElement>){
-      for (let i = 0; i < 16; i++) {
-        cache.salvar(i,i)
-      }
-      const a = await cache.buscar(6)
-      console.log(a);
+      console.log(cache);
       setprocessador(processador)
       let flag = 0
       if(debug == true){
@@ -115,10 +112,11 @@ export function VMPage(){
   const compilador: Compilador = new Compilador(NEWMAN);
 
   const [cache, setCache]
-    = useState<MemoriaCache>(new CacheMapeamentoDireto(4,4))
+    = useState<MemoriaCache>(new CacheMapeamentoAssociativo(4,4))
 
 
   cache.salvar(4,4)
+
 
 
 
