@@ -8,9 +8,14 @@ describe("Cache de mapeamento associativo", function() {
   test("testando algumas coisas",()=> {
     const cache: MemoriaCache = new CacheMapeamentoAssociativo(4,4, OverwritePolice.FIFO)
   })
-  test("testando qual item sai do vetor no array", () => {
-    let vetor: number [] = [ 1, 2, 3, 4]
-    vetor.pop()
-    expect(vetor.toString()).toBe([1 ,2 ,3].toString())
-  })
+  test(
+    `testando se o objeto fruto de um find no
+    array persiste alteração no objeto inicial`, () =>{
+      const obj_array = [ {num: 1}, {num: 2}, {num: 3}]
+      const item = obj_array.find(item => item.num ==1)
+      if (item){
+        item.num = 9
+      }
+      expect(obj_array[0].num).toBe(9)
+    })
 });
