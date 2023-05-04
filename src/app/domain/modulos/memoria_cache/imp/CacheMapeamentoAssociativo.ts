@@ -1,35 +1,10 @@
 import { MemoriaCache } from "@/app/domain/modulos/memoria_cache/MemoriaCache";
 import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
 import { add } from "husky";
+import { Linha } from "@/app/domain/modulos/memoria_cache/imp/types/Linha";
 
 
-export class Linha {
-  tag: number
-  is_Altered: boolean = false;
-  acces_count: number;
-  bloco: number[] = []
 
-  constructor(tam_bloco: number) {
-    for (let i = 0; i < tam_bloco; i++) {
-      this.bloco.push(0)
-    }
-  }
-
-   salvar (tag:number, bloco: number, word: number, addres: number, val: number): void {
-    //if esta suja
-     if (this.is_Altered){
-
-     }
-     //se limpo
-     else{
-       this.tag = tag
-       this.bloco[word] = val
-       this.is_Altered = !this.is_Altered
-     }
-      this.bloco[addres/2] = val
-      this.is_Altered = true
-  }
-}
 
 export enum OverwritePolice {
   FIFO = 0
@@ -70,7 +45,7 @@ export class CacheMapeamentoAssociativo implements MemoriaCache{
 
       if ( linha ){
         linha.acces_count++
-        return linha.bloco[calcularPos()]
+        return linha.bloco[this.calcularPos(address)]
       }else {
         switch (this._overwrite_police) {
           case OverwritePolice.FIFO:
@@ -94,8 +69,14 @@ export class CacheMapeamentoAssociativo implements MemoriaCache{
     const word: number = this.calcular_word( address )
     const tag: number = this.calcular_tag( address )
 
+    const linha  : Linha | undefined = this.linhas.find(linha =>
+      linha.tag == this.calcular_tag( address )
+    )
 
-     this.linhas[bloco].salvar(tag, word, bloco, address, value)
+    if ( linha ){
+      linha.bloco[this.calcular_word(address)] = value
+    }
+
   }
 
   private calcular_tag( address: number ): number {
@@ -131,6 +112,11 @@ export class CacheMapeamentoAssociativo implements MemoriaCache{
     }
     mascara = mascara << this._tam_campo_word
     return mascara
+  }
+
+  private calcularPos(address: number): number{
+    const pos: number = (address & this.calcular_mascara_campo_word())
+    return pos
   }
 
 

@@ -1,19 +1,18 @@
 import Processador from "@/app/domain/modulos/processador/Processador";
 
 import { Registrador } from "@components/Registrador/Registrador";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MemCell } from "@components/memCell/MemCell";
 import { Compilador } from "@/app/domain/modulos/compilador/Compilador";
 import { NEWMAN } from "@/app/domain/arquiteturas/Neumann";
 import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
 import { NavBar } from "@components/navbar/NavBar";
 import { MemoriaCache } from "@/app/domain/modulos/memoria_cache/MemoriaCache";
-import { CacheMapeamentoDireto } from "@/app/domain/modulos/memoria_cache/imp/CacheMapeamentoDireto";
-import { CacheMapeamentoAssociativo } from "@/app/domain/modulos/memoria_cache/imp/CacheMapeamentoAssociativo";
-
-
-
-
+import {
+  CacheMapeamentoAssociativo,
+  OverwritePolice
+} from "@/app/domain/modulos/memoria_cache/imp/CacheMapeamentoAssociativo";
+import { LinhaComponent } from "@components/memoriaCache/LinhaComponent";
 
 
 export function VMPage(){
@@ -112,10 +111,11 @@ export function VMPage(){
   const compilador: Compilador = new Compilador(NEWMAN);
 
   const [cache, setCache]
-    = useState<MemoriaCache>(new CacheMapeamentoAssociativo(4,4))
+    = useState<MemoriaCache>(new CacheMapeamentoAssociativo(4,4,OverwritePolice.FIFO))
 
 
   cache.salvar(4,4)
+  console.log(cache)
 
 
 
@@ -154,55 +154,77 @@ export function VMPage(){
         </span>
       </div>
       <div>
-        <div className={''}>
-          <div>
-            <div className={'flex'}>
-              <Registrador nome={"MBR"} value={processador.MBR}/>
-            </div>
-            <div className={'flex mt-2'}>
-              <div className={`grid grid-cols-6 gap-3`}>
-                <Registrador nome={"PC"} value={processador.PC} />
-                <Registrador nome={"IR"} value={processador.IR ? processador.IR.opcode : 0} />
-                <Registrador nome={"MAR"} value={processador.MAR} />
-                <Registrador nome={"IMM"} value={processador.IMM} />
-                <Registrador nome={"RO0"} value={processador.RO0} />
-                <Registrador nome={"RO1"} value={processador.RO1} />
-              </div>
-            </div>
-            <div className={`flex`}>
-              <div className={'grid grid-cols-3'}>
+        <div>
+          Memoria
+        </div>
+        <div>
+          {cache.linhas.map(linha => <LinhaComponent linha={linha}/>)}
+        </div>
+      </div>
+      <div>
+        <div className="collapse">
+          <input type="checkbox" />
+          <div className="collapse-title text-xl font-medium">
+            Processador
+          </div>
+          <div className="collapse-content">
+            <div className={''}>
+              <div>
+                <div className={'flex'}>
+                  <Registrador nome={"MBR"} value={processador.MBR}/>
+                </div>
+                <div className={'flex mt-2'}>
+                  <div className={`grid grid-cols-6 gap-3`}>
+                    <Registrador nome={"PC"} value={processador.PC} />
+                    <Registrador nome={"IR"} value={processador.IR ? processador.IR.opcode : 0} />
+                    <Registrador nome={"MAR"} value={processador.MAR} />
+                    <Registrador nome={"IMM"} value={processador.IMM} />
+                    <Registrador nome={"RO0"} value={processador.RO0} />
+                    <Registrador nome={"RO1"} value={processador.RO1} />
+                  </div>
+                </div>
+                <div className={`flex`}>
+                  <div className={'grid grid-cols-3'}>
 
-                <div className={`m-2`}>
-                  <Registrador nome={"L"} value={processador.L} />
-                </div>
-                <div className={`m-2`}>
-                  <Registrador nome={"E"} value={processador.E} />
-                </div>
-                <div className={`m-2`}>
-                  <Registrador nome={"G"} value={processador.G} />
-                </div>
+                    <div className={`m-2`}>
+                      <Registrador nome={"L"} value={processador.L} />
+                    </div>
+                    <div className={`m-2`}>
+                      <Registrador nome={"E"} value={processador.E} />
+                    </div>
+                    <div className={`m-2`}>
+                      <Registrador nome={"G"} value={processador.G} />
+                    </div>
 
-              </div>
-            </div>
-            <div className={'flex'}>
-              <div className={'grid grid-cols-4'}>
-                {
-                  processador.GPR.map((reg, index) =>
-                    (
-                      <div className={'m-2'}>
-                        <Registrador nome={"R" + index.toString()} value={reg} key={index}/>
-                      </div>
-                    ))
-                }
+                  </div>
+                </div>
+                <div className={'flex'}>
+                  <div className={'grid grid-cols-4'}>
+                    {
+                      processador.GPR.map((reg, index) =>
+                        (
+                          <div className={'m-2'}>
+                            <Registrador nome={"R" + index.toString()} value={reg} key={index}/>
+                          </div>
+                        ))
+                    }
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div className={'flex'}>
-          <div className={'grid grid-cols-12'}>
-            {
-              ram.asArray.map((valor, index) => <MemCell value={valor} position={index} key={index}/>)
-            }
+        <div className="collapse">
+          <input type="checkbox" />
+          <div className="collapse-title text-xl font-medium">
+            Memoria RAM
+          </div>
+          <div className="collapse-content">
+            <div className={'grid grid-cols-12'}>
+              {
+                ram.asArray.map((valor, index) => <MemCell value={valor} position={index} key={index}/>)
+              }
+            </div>
           </div>
         </div>
       </div>

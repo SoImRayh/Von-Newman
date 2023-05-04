@@ -1,16 +1,13 @@
 import { MemoriaCache } from "@/app/domain/modulos/memoria_cache/MemoriaCache";
 import { MemRAM }from "../../memoria_ram/MemRAM";
+import { Linha } from "@/app/domain/modulos/memoria_cache/imp/types/Linha";
 
 type Props = {
   size: number;
   ram?: MemRAM;
 }
 
-export interface Linha  {
 
-  tag: number
-  bloco: number[]
-}
 export class CacheMapeamentoDireto implements MemoriaCache {
 
   private ram: MemRAM;
@@ -28,14 +25,14 @@ export class CacheMapeamentoDireto implements MemoriaCache {
       this.ram = ram;
       this._tam_bloco = tam_bloco
       this._qtd_linhas = qtd_linhas
-      this.linhas = new Array<Linha>(qtd_linhas).fill({tag: 0x0, bloco: [0,0,0,0]})
+      this.linhas = new Array<Linha>(qtd_linhas).fill(new Linha(this._tam_bloco))
 
     }else {
 
       this.ram = new MemRAM(64)
       this._tam_bloco = tam_bloco
       this._qtd_linhas = qtd_linhas
-      this.linhas = new Array<Linha>(qtd_linhas).fill({tag: 0x0, bloco: [0,0,0,0]})
+      this.linhas = new Array<Linha>(qtd_linhas).fill(new Linha(this._tam_bloco))
 
     }
 

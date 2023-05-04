@@ -5,9 +5,8 @@ import {
 } from "../../../domain/modulos/memoria_cache/imp/CacheMapeamentoAssociativo";
 
 describe("Cache de mapeamento associativo", function() {
-  test("testando algumas coisas",()=> {
     const cache: MemoriaCache = new CacheMapeamentoAssociativo(4,4, OverwritePolice.FIFO)
-  })
+
   test(
     `testando se o objeto fruto de um find no
     array persiste alteração no objeto inicial`, () =>{
@@ -18,4 +17,11 @@ describe("Cache de mapeamento associativo", function() {
       }
       expect(obj_array[0].num).toBe(9)
     })
+
+  test(`testando salvar e buscar o valor da cache`, () => {
+    cache.salvar(2, 15)
+    cache.buscar(2).then( val => {
+      expect(val).toBe(15)
+    })
+  })
 });
