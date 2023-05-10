@@ -2,6 +2,7 @@ import { ClockTime, ramClock } from "@/app/domain/Clocks";
 import { Instruction } from "@/app/domain/interfaces/Instruction";
 import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
 import {NEWMAN} from "@/app/domain/arquiteturas/Neumann";
+import { MemoriaCache } from "@/app/domain/modulos/memoria_cache/MemoriaCache";
 
 
 class MemCache {
@@ -89,9 +90,7 @@ class Processador {
   /*
   * Memoria cache do processador
   * */
-  cache: MemCache;
-
-
+  cache: MemoriaCache;
   /*
   * Interface com a memória RAM
   * */
@@ -112,19 +111,12 @@ class Processador {
 
   async busca(): Promise<void> {
     return new Promise(resolve => {
-      if (this.cache) {
-        console.log("tem cache");
+
+      this.cache.buscar(this.PC).then( response => {
+        this.MBR = response
+        //do something
         resolve()
-      } else {
-        setTimeout(() => {
-          this.ram.buscar(this.PC).then(palavra => {
-            this.MBR = palavra
-            resolve()
-          })
-        }, ClockTime)
-
-      }
-
+      })
     })
   }
 

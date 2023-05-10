@@ -134,7 +134,7 @@ export class CacheMapeamentoDireto implements MemoriaCache {
     const tag : number = ((address >> tam_r) >> tam_word)
     this.linhas[this.calcularLinha(address)].tag = tag
     this.linhas[this.calcularLinha(address)].bloco[this.CalcularPosicaoDaPalavraNoBloco(address)] = value
-    this.ram.gravar(address, value).then()
+    this.ram.gravar(address, value)
   }
 
 }

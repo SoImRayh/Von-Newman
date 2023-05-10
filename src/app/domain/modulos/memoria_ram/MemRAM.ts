@@ -1,5 +1,6 @@
 import { ramClock } from "@/app/domain/Clocks";
 import { ProgramaCompilado } from "@/app/domain/interfaces/ProgramaCompilado";
+import { Linha } from "@/app/domain/modulos/memoria_cache/imp/types/Linha";
 
 export class MemRAM {
 
@@ -26,14 +27,8 @@ export class MemRAM {
       resolve(word);
     })
   }
-  async gravar(pos: number, data: number) : Promise<void>{
-      return new Promise( resolve => {
-        this.view[pos] = data >>> 24
-        this.view[pos+0x1] = (data & 0x00110000) >> 16
-        this.view[pos + 0x2] = (data & 0x00001100) >> 8
-        this.view[pos+ 0x3] = (data & 0x00000011)
-        resolve()
-      })
+  gravar(pos: number, val: number){
+
   }
 
   async carregarPrograma(bytecode :  ProgramaCompilado[]): Promise<void> {
@@ -57,6 +52,10 @@ export class MemRAM {
         resolve()
       })
     })
+  }
+
+  persistir(linha1: Linha) {
+
   }
 }
 

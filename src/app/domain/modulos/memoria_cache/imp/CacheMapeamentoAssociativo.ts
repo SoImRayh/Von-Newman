@@ -7,7 +7,8 @@ import { Linha } from "@/app/domain/modulos/memoria_cache/imp/types/Linha";
 
 
 export enum OverwritePolice {
-  FIFO = 0
+  FIFO = 0,
+  LFU,
 
 }
 
@@ -48,11 +49,23 @@ export class CacheMapeamentoAssociativo implements MemoriaCache{
         return linha.bloco[this.calcularPos(address)]
       }else {
         switch (this._overwrite_police) {
-          case OverwritePolice.FIFO:
+          case OverwritePolice.FIFO: {
+            // First in first Out
+            if (this.linhas[this._qtd_linhas-1].is_Altered)
+              //TODO implementar a persistencia do bloco na RAM
+              this.ram.persistir(this.linhas[this._qtd_linhas-1])
+            this.linhas.pop()
+            this.ram.buscar(address).then( bloco => {
+              this.linhas.push(new Linha(bloco))
+            })
+            break;
+          }
+          case OverwritePolice.LFU: {
+            // Last frequent used
 
+          }
         }
       }
-
     });
   }
 
