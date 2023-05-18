@@ -1,0 +1,16 @@
+lw a2 a14 92
+lw a1 a12 96
+sub a2 a14 a12
+lw a1 a12 8e
+div a2 a12 a14
+lw a1 a14 8a
+mul a2 a14 a12
+lw a1 a12 86
+add a1 a12 a14
+sw a1 a12 82
+break
+86 d; 20
+8a d; 3
+8e d; 4
+92 d; 5
+96 d; 3

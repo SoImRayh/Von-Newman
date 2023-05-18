@@ -146,6 +146,10 @@ export function VMPage(){
           <input type="checkbox" className={'toggle toggle-primary'} accept={'.vm'} onChange={e => handleStatus(e)}/>
           <span className="ml-3 text-sm font-mono font-medium text-gray-900 dark:text-gray-300">debug</span>
         </div>
+        <div className={'flex items-center'}>
+          <input type="checkbox" className={'toggle toggle-primary'} accept={'.vm'}/>
+          <span className="ml-3 text-sm font-mono font-medium text-gray-900 dark:text-gray-300">RiscV</span>
+        </div>
         <div className={'flex w-full justify-end'}>
           <input type={'file'} onChange={(event) => handleFile(event)} placeholder={'alos'} className={'file-input file-input-md w-full max-w-xs mr-20'}/>
         </div>
