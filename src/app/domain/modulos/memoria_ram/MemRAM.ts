@@ -5,11 +5,9 @@ import { Linha } from "@/app/domain/modulos/memoria_cache/imp/types/Linha";
 export class MemRAM {
 
   buffer : ArrayBuffer
-
   view : Uint8Array
-
   asArray: number[]
-
+  _tamanho_do_bloco: number;
   constructor(byteSize: number) {
     this.buffer = new ArrayBuffer(byteSize);
     this.view = new Uint8Array(this.buffer);
@@ -17,15 +15,9 @@ export class MemRAM {
   }
 
 
-   async buscar(pos: number): Promise<number> {
-    return new Promise( resolve => {
-      let word : number  = 0x0
-      word = this.view[pos] << 0x8;
-      word = (word | this.view[pos+0x1]) << 0x8;
-      word = (word | this.view[pos+0x2]) << 0x8;
-      word = (word | this.view[pos+0x3]);
-      resolve(word);
-    })
+  buscar(pos: number): number{
+      return  this.view[pos]
+
   }
   gravar(pos: number, val: number){
 
@@ -53,9 +45,16 @@ export class MemRAM {
       })
     })
   }
+  buscar_bloco(initial_addres: number, tam_bloco: number){
+    const toReturn : number[] = [];
+    this.view.slice(initial_addres, initial_addres + tam_bloco).forEach( val => toReturn.push(val))
+    return toReturn
+  }
 
-  persistir(linha1: Linha) {
-
+  persistir(initial_address: number, bloco: number[]) {
+    for (let i = 0; i < bloco.length; i++) {
+      this.view[initial_address+i] = bloco[i]
+    }
   }
 }
 
