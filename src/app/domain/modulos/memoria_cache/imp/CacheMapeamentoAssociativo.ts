@@ -101,6 +101,11 @@ export class CacheMapeamentoAssociativo implements MemoriaCache {
   }
 
   salvar(address: number, value: number): void {
+
+    //todo arrumar o processo:
+    /*
+    * */
+
     const bloco: number = this.calcular_bloco(address);
     const word: number = this.calcular_word(address);
     const tag: number = this.calcular_tag(address);
