@@ -3,7 +3,7 @@ import { NEWMAN } from "@/app/domain/arquiteturas/Neumann";
 import { MemoriaCache } from "@/app/domain/modulos/memoria_cache/MemoriaCache";
 import {
   CacheMapeamentoAssociativo,
-  OverwritePolice
+  OverwritePolicy
 } from "@/app/domain/modulos/memoria_cache/imp/CacheMapeamentoAssociativo";
 
 /*
@@ -95,7 +95,7 @@ class Processador {
 
   constructor() {
     //todo contrutor para setar a memoria cache
-    this.cache = new CacheMapeamentoAssociativo(4,4,OverwritePolice.FIFO);
+    this.cache = new CacheMapeamentoAssociativo(4,4,OverwritePolicy.FIFO);
     this.inst = NEWMAN
     for (let i = 0; i < 32; i++) {
       this.GPR[i] = 0;

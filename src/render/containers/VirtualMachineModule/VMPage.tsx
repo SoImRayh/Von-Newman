@@ -10,7 +10,7 @@ import { NavBar } from "@components/navbar/NavBar";
 import { MemoriaCache } from "@/app/domain/modulos/memoria_cache/MemoriaCache";
 import {
   CacheMapeamentoAssociativo,
-  OverwritePolice
+  OverwritePolicy
 } from "@/app/domain/modulos/memoria_cache/imp/CacheMapeamentoAssociativo";
 import { LinhaComponent } from "@components/memoriaCache/LinhaComponent";
 
@@ -113,7 +113,7 @@ export function VMPage(){
   const compilador: Compilador = new Compilador(NEWMAN);
 
   const [cache, setCache]
-    = useState<MemoriaCache>(new CacheMapeamentoAssociativo(4,4,OverwritePolice.FIFO))
+    = useState<MemoriaCache>(new CacheMapeamentoAssociativo(4,4,OverwritePolicy.FIFO))
 
   for (let i = 0; i < 16; i++) {
     cache.salvar(i, i*2)

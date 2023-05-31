@@ -17,14 +17,18 @@ export class MemRAM {
   }
 
 
-   async buscar(pos: number): Promise<number> {
+   async buscar(pos: number, tam_bloco: number): Promise<Uint8Array> {
     return new Promise( resolve => {
-      let word : number  = 0x0
-      word = this.view[pos] << 0x8;
-      word = (word | this.view[pos+0x1]) << 0x8;
-      word = (word | this.view[pos+0x2]) << 0x8;
-      word = (word | this.view[pos+0x3]);
-      resolve(word);
+
+      //vetor de bytes a ser retornado como o bloco
+      const bloco  = this.view.slice(pos, (pos + tam_bloco))
+
+      // let word : number  = 0x0
+      // word = this.view[pos] << 0x8;
+      // word = (word | this.view[pos+0x1]) << 0x8;
+      // word = (word | this.view[pos+0x2]) << 0x8;
+      // word = (word | this.view[pos+0x3]);
+      resolve(bloco);
     })
   }
   gravar(pos: number, val: number){
@@ -54,8 +58,10 @@ export class MemRAM {
     })
   }
 
-  persistirBloco(bloco: number[]) {
-
+  persistirBloco(endereco_inicial: number, bloco: Uint8Array) {
+    for (let i = 0; i < bloco.length; i++) {
+      this.view[endereco_inicial + i ] = bloco[ i ]
+    }
   }
 
   buscarBloco( address: number): number[]{

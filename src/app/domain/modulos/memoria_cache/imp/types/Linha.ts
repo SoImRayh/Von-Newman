@@ -1,13 +1,14 @@
 export class Linha {
   tag: number
   is_Altered: boolean = false;
-  count: number;
-  bloco: number[] = []
+  _contador_LRU: number;
+  _contador_LFU: number;
+  bloco: Uint8Array = new Uint8Array()
 
-  constructor(tam_bloco: number) {
-    for (let i = 0; i < tam_bloco; i++) {
-      this.bloco.push(0)
-    }
+  constructor(tag: number,tam_bloco: number , bloco: Uint8Array) {
+    this.tag = tag;
+    this.bloco = new Uint8Array(tam_bloco);
+    this.bloco = bloco
   }
 
   salvar (tag:number, bloco: number, word: number, addres: number, val: number): void {
