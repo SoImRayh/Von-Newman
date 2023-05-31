@@ -1,94 +1,85 @@
 import { MemoriaCache } from "@/app/domain/modulos/memoria_cache/MemoriaCache";
 import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
+import { add } from "husky";
 import { Linha } from "@/app/domain/modulos/memoria_cache/imp/types/Linha";
 
 
+
+
 export enum OverwritePolice {
-  FIFO,
+  FIFO = 0,
   LFU,
-  LRU
+  LRU,
 
 }
 
-export class CacheMapeamentoAssociativo implements MemoriaCache {
+export class CacheMapeamentoAssociativo implements MemoriaCache{
 
-  ram: MemRAM;
-  linhas: Linha[] = [];
-  _tam_campo_word: number;
-  _tam_campo_bloco: number;
-  _tam_campo_tag: number;
-  _qtd_linhas: number;
-  _tam_bloco: number;
-  _overwrite_police: OverwritePolice;
-  _missRatio: number;
-  _hitRatio: number;
-  _Buscas: number;
+  ram: MemRAM
+  linhas: Linha[] = []
+  _tam_campo_word: number
+  _tam_campo_bloco: number
+  _tam_campo_tag: number
+  _qtd_linhas: number
+  _tam_bloco: number
+  _overwrite_police: OverwritePolice
+  _missRatio: number
+  _hitRatio: number
+  _Buscas: number
 
 
   constructor(qtd_linhas: number, tam_bloco: number, overidePolice: OverwritePolice) {
 
-    this._tam_bloco = Math.log2(qtd_linhas);
-    this._tam_campo_word = Math.log2(tam_bloco);
+    this._tam_bloco = Math.log2(qtd_linhas)
+    this._tam_campo_word = Math.log2(tam_bloco)
 
-    this._overwrite_police = overidePolice;
+    this._overwrite_police = overidePolice
     for (let i = 0; i < qtd_linhas; i++) {
-      this.linhas.push(new Linha(tam_bloco));
+      this.linhas.push(new Linha(tam_bloco))
     }
   }
-
   buscar(address: number): Promise<number> {
-    return new Promise(resolve => {
-      //TODO implementar as buscas
-      const tag: number = this.calcular_tag(address);
-      const linha: Linha | undefined = this.linhas.find(linha => linha.tag == tag);
+    return new Promise( resolve => {
+      const tag = address >> 3
+      const linha : Linha | undefined = this.linhas.find(linha => linha.tag == tag )
 
-      if (linha) {
-        //TODO verificar se o return esta feito em palavras corretament ou o resto da palavra pode estar em outro bloco
-        linha.acces_count++;
-        return linha.bloco[this.calcularPos(address)];
-      } else {
 
+      if ( linha ){
+        linha.count++
+        return linha.bloco[this.calcularPos( address )]
+      }else {
         switch (this._overwrite_police) {
           case OverwritePolice.FIFO: {
-            const toRemove: Linha | undefined = this.linhas.pop();
-            if (toRemove?.is_Altered){
-              this.persistirNaRam(toRemove)
-            }
-            this.linhas.unshift(new Linha(4));
+            // First in first Out
+            if (this.linhas[this._qtd_linhas-1].is_Altered)
+              //TODO implementar a persistencia do bloco na RAM
+              this.ram.persistirBloco(this.linhas[this._qtd_linhas-1].bloco)
+            this.linhas.pop()
+            this.ram.buscar(address).then( bloco => {
+              this.linhas.push(new Linha(bloco))
+            })
             break;
           }
-
 
           case OverwritePolice.LFU: {
-            const indexToRemove =
-              this.linhas.indexOf(this.linhas.reduce( (prev, curr) =>
-                prev.acces_count < curr.acces_count ? prev : curr))
-
-            if (this.linhas[indexToRemove].is_Altered){
-              this.persistirNaRam(this.linhas[indexToRemove])
-            }
-            //todo arrumar os contrutores da classe Linha
-
-            this.linhas[indexToRemove] = new Linha(4)
-            break;
+            // Last frequent used
+            this.linhas.sort( (a,b) => a.count < b.count ? 1:-1)
+            this.ram.buscar(address).then( val => {
+              this.linhas.push(new Linha( val ))
+            })
+            break
           }
 
-
           case OverwritePolice.LRU: {
-            const indexToRemove =
-              this.linhas.indexOf(this.linhas.reduce((prev, curr) =>
-                prev.acces_count < curr.acces_count ? prev : curr))
-
-            if (this.linhas[indexToRemove].is_Altered){
-              this.persistirNaRam(this.linhas[indexToRemove])
-            }
-            //todo arrumar o contrutor futuramente buscando o bloco diretamente da ram
-            this.linhas[indexToRemove] = new Linha(4)
+            this.linhas.sort( (a,b) => a.count < b.count ? 1: -1)
+            this.linhas.pop()
+            this.ram.buscar(address).then( val => {
+              this.linhas.push(new Linha(val))
+            })
             break;
           }
         }
       }
-
     });
   }
 
@@ -101,67 +92,59 @@ export class CacheMapeamentoAssociativo implements MemoriaCache {
   }
 
   salvar(address: number, value: number): void {
+    const bloco: number = this.calcular_bloco( address )
+    const word: number = this.calcular_word( address )
+    const tag: number = this.calcular_tag( address )
 
-    //todo arrumar o processo:
-    /*
-    * */
+    const linha  : Linha | undefined = this.linhas.find(linha =>
+      linha.tag == this.calcular_tag( address )
+    )
 
-    const bloco: number = this.calcular_bloco(address);
-    const word: number = this.calcular_word(address);
-    const tag: number = this.calcular_tag(address);
-
-    const linha: Linha | undefined = this.linhas.find(linha =>
-      linha.tag == this.calcular_tag(address)
-    );
-
-    if (linha) {
-      linha.bloco[this.calcular_word(address)] = value;
+    if ( linha ){
+      linha.bloco[this.calcular_word( address )] = value
     }
 
   }
 
-  private calcular_tag(address: number): number {
-    return (address >> this._tam_campo_word) >> this._tam_campo_bloco;
+  private calcular_tag( address: number ): number {
+    return (address >> this._tam_campo_word) >> this._tam_campo_bloco
   }
 
 
-  private calcular_word(address: number): number {
-    const mascara: number = this.calcular_mascara_campo_word();
-    return (address | mascara);
+  private calcular_word( address: number): number{
+    const mascara: number = this.calcular_mascara_campo_word()
+    return ( address | mascara )
   }
 
 
   private calcular_mascara_campo_word(): number {
-    let mascara: number = 1;
-    for (let i = 0; i < (this._tam_campo_word - 1); i++) {
-      mascara = (mascara << 1) | 1;
+    let mascara : number = 1
+    for (let i = 0; i < ( this._tam_campo_word - 1 ); i++) {
+      mascara = ( mascara << 1) | 1
     }
-    return mascara;
+    return mascara
   }
 
 
   private calcular_bloco(address: number) {
-    const mascara: number = this.calcular_mascara_campo_bloco();
+    const mascara: number = this.calcular_mascara_campo_bloco()
     return (address | mascara) >> this._tam_campo_word;
   }
 
 
   private calcular_mascara_campo_bloco(): number {
-    let mascara: number = 1;
-    for (let i = 0; i < (this._tam_campo_bloco - 1); i++) {
-      mascara = (mascara << 1) | 1;
+    let mascara : number = 1
+    for (let i = 0; i < (this._tam_campo_bloco - 1 ); i++) {
+      mascara = (mascara << 1) | 1
     }
-    mascara = mascara << this._tam_campo_word;
-    return mascara;
+    mascara = mascara << this._tam_campo_word
+    return mascara
   }
 
-  private calcularPos(address: number): number {
-    const pos: number = (address & this.calcular_mascara_campo_word());
-    return pos;
+  private calcularPos(address: number): number{
+    const pos: number = (address & this.calcular_mascara_campo_word())
+    return pos
   }
 
 
-  private persistirNaRam(linha: Linha) {
-
-  }
 }

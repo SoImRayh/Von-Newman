@@ -23,7 +23,7 @@ export function VMPage(){
 
   const [ciclo, setCiclo] = useState<number>(0);
   const [processador, setprocessador] = useState<Processador>(new Processador());
-  const [ram, setRam] = useState<MemRAM>(new MemRAM(512))
+  const [ram, setRam] = useState<MemRAM>(new MemRAM(512, 4))
   const [debug, setDebug] = useState<boolean>(false)
 
 
@@ -101,7 +101,9 @@ export function VMPage(){
       setRam(ram)
       console.log(ram);
 
-      processador.ram = ram
+
+
+      processador.cache.ram = ram
       setprocessador(processador)
     }
 
@@ -113,8 +115,10 @@ export function VMPage(){
   const [cache, setCache]
     = useState<MemoriaCache>(new CacheMapeamentoAssociativo(4,4,OverwritePolice.FIFO))
 
-
-  cache.salvar(4,4)
+  for (let i = 0; i < 16; i++) {
+    cache.salvar(i, i*2)
+  }
+  setCache(cache)
   console.log(cache)
 
 
@@ -155,10 +159,12 @@ export function VMPage(){
       </div>
       <div>
         <div>
-          Memoria
-        </div>
-        <div>
-          {cache.linhas.map(linha => <LinhaComponent linha={linha}/>)}
+          <div>
+            Memoria
+          </div>
+          <div>
+            {cache.linhas.map(linha => <LinhaComponent linha={linha}/>)}
+          </div>
         </div>
       </div>
       <div>

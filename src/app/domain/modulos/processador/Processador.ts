@@ -1,12 +1,10 @@
-import { ClockTime, ramClock } from "@/app/domain/Clocks";
 import { Instruction } from "@/app/domain/interfaces/Instruction";
-import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
-import {NEWMAN} from "@/app/domain/arquiteturas/Neumann";
+import { NEWMAN } from "@/app/domain/arquiteturas/Neumann";
 import { MemoriaCache } from "@/app/domain/modulos/memoria_cache/MemoriaCache";
-
-
-class MemCache {
-}
+import {
+  CacheMapeamentoAssociativo,
+  OverwritePolice
+} from "@/app/domain/modulos/memoria_cache/imp/CacheMapeamentoAssociativo";
 
 /*
 * A classe processador sera instaciada com todos os registradores com o valor 0
@@ -91,17 +89,13 @@ class Processador {
   * Memoria cache do processador
   * */
   cache: MemoriaCache;
-  /*
-  * Interface com a memória RAM
-  * */
-  ram: MemRAM;
 
 
   inst: Instruction[];
 
   constructor() {
-    //this.cache = new MemCache();
-    this.ram = new MemRAM(64);
+    //todo contrutor para setar a memoria cache
+    this.cache = new CacheMapeamentoAssociativo(4,4,OverwritePolice.FIFO);
     this.inst = NEWMAN
     for (let i = 0; i < 32; i++) {
       this.GPR[i] = 0;
@@ -111,10 +105,8 @@ class Processador {
 
   async busca(): Promise<void> {
     return new Promise(resolve => {
-
       this.cache.buscar(this.PC).then( response => {
         this.MBR = response
-        //do something
         resolve()
       })
     })

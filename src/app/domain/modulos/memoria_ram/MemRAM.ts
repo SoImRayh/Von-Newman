@@ -7,17 +7,25 @@ export class MemRAM {
   buffer : ArrayBuffer
   view : Uint8Array
   asArray: number[]
-  _tamanho_do_bloco: number;
-  constructor(byteSize: number) {
-    this.buffer = new ArrayBuffer(byteSize);
-    this.view = new Uint8Array(this.buffer);
-    this.asArray = Array.from(this.view);
+  _tam_bloco: number
+
+  constructor(byteSize: number, _tam_bloco: number) {
+    this._tam_bloco = _tam_bloco
+    this.buffer = new ArrayBuffer(byteSize)
+    this.view = new Uint8Array(this.buffer)
+    this.asArray = Array.from(this.view)
   }
 
 
-  buscar(pos: number): number{
-      return  this.view[pos]
-
+   async buscar(pos: number): Promise<number> {
+    return new Promise( resolve => {
+      let word : number  = 0x0
+      word = this.view[pos] << 0x8;
+      word = (word | this.view[pos+0x1]) << 0x8;
+      word = (word | this.view[pos+0x2]) << 0x8;
+      word = (word | this.view[pos+0x3]);
+      resolve(word);
+    })
   }
   gravar(pos: number, val: number){
 
@@ -45,16 +53,13 @@ export class MemRAM {
       })
     })
   }
-  buscar_bloco(initial_addres: number, tam_bloco: number){
-    const toReturn : number[] = [];
-    this.view.slice(initial_addres, initial_addres + tam_bloco).forEach( val => toReturn.push(val))
-    return toReturn
+
+  persistirBloco(bloco: number[]) {
+
   }
 
-  persistir(initial_address: number, bloco: number[]) {
-    for (let i = 0; i < bloco.length; i++) {
-      this.view[initial_address+i] = bloco[i]
-    }
+  buscarBloco( address: number): number[]{
+    return [0x0]
   }
 }
 

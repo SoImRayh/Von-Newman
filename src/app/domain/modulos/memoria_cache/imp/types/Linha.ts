@@ -1,7 +1,7 @@
 export class Linha {
   tag: number
   is_Altered: boolean = false;
-  acces_count: number;
+  count: number;
   bloco: number[] = []
 
   constructor(tam_bloco: number) {
