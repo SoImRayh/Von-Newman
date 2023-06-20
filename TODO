@@ -1,1 +1,2 @@
-=> todo
+=> todo ainda nao sei mas o problema de undefined se resolve quando uso async com timer
+Um modo para alterar as bases que vamos usar é: criar um state com valores das bases e no menu disponibilizar a escolha de base assim o metodo to string altera o parametro para o valor do stt

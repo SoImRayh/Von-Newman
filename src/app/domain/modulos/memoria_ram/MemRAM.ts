@@ -28,7 +28,7 @@ export class MemRAM {
     })
   }
   gravar(pos: number, val: number){
-
+        this.view[pos] = val
   }
 
   async carregarPrograma(bytecode :  ProgramaCompilado[]): Promise<void> {
@@ -54,12 +54,18 @@ export class MemRAM {
     })
   }
 
-  persistirBloco(bloco: number[]) {
+    persistirBloco(addres: number, data: number[]) {
+        const posicao_inicial : number = Math.ceil(addres / this._tam_bloco) * this._tam_bloco
+        data.forEach((data, index) =>{
+            this.view[posicao_inicial + index] = data
+        })
+    }
 
-  }
-
-  buscarBloco( address: number): number[]{
-    return [0x0]
+  buscarBloco( address: number): Promise<number[]>{
+      return new Promise( resolve => {
+          const bloco : number = Math.floor(address / this._tam_bloco)
+          resolve( Array.from(this.view.slice((bloco * this._tam_bloco), (bloco * this._tam_bloco) + this._tam_bloco)))
+      })
   }
 }
 

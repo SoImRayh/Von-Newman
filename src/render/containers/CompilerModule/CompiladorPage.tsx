@@ -16,7 +16,7 @@ export function CompiladorPage(){
   * */
   const [compilador, setcompilador] = useState(new Compilador(NEWMAN))
   const [text, settext] = useState<string>('')
-  const [ram, setRam] = useState<MemRAM>(new MemRAM(512*4))
+  const [ram, setRam] = useState<MemRAM>(new MemRAM(512*4,4),)
   const [flag, setFlag] = useState<number>(1)
   const [processador, setProcessador] = useState<Processador>(new Processador())
 
@@ -37,7 +37,7 @@ export function CompiladorPage(){
         await compilador.compilar()
         console.log(compilador.bytecode);
         await ram.carregarPrograma(compilador.bytecode)
-        processador.ram = ram
+        processador.cache.ram = ram
         setFlag(0)
       })
     }

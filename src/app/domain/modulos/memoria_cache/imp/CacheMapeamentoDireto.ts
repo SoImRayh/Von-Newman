@@ -10,13 +10,13 @@ type Props = {
 
 export class CacheMapeamentoDireto implements MemoriaCache {
 
-  private ram: MemRAM;
-  public linhas: Linha[]
-  private _tam_bloco: number;
-  private _qtd_linhas: number;
-  private _totalDeBuscas: number = 0;
-  private _totalDeMiss: number = 0;
-  private _totalDeHit: number = 0;
+   ram: MemRAM;
+   linhas: Linha[]
+   _tam_bloco: number;
+   _qtd_linhas: number;
+   _totalDeBuscas: number = 0;
+   _totalDeMiss: number = 0;
+   _totalDeHit: number = 0;
 
   constructor(qtd_linhas: number, tam_bloco: number, ram?: MemRAM) {
 
@@ -29,7 +29,7 @@ export class CacheMapeamentoDireto implements MemoriaCache {
 
     }else {
 
-      this.ram = new MemRAM(64)
+      this.ram = new MemRAM(64,4)
       this._tam_bloco = tam_bloco
       this._qtd_linhas = qtd_linhas
       this.linhas = new Array<Linha>(qtd_linhas).fill(new Linha(this._tam_bloco))
@@ -119,22 +119,24 @@ export class CacheMapeamentoDireto implements MemoriaCache {
 
 
   //TODO remover assim que acabar as implementações
-  salvar(address: number, value: number): void {
+  salvar(address: number, value: number): Promise<void> {
+      return new Promise<void>((resolve, reject) => {
+          /*
+* Calcular o a quantidade de bits destinados a palavra em um endereço
+* */
+          const tam_word: number = Math.log2(this._tam_bloco)
 
-    /*
-    * Calcular o a quantidade de bits destinados a palavra em um endereço
-    * */
-    const tam_word: number = Math.log2(this._tam_bloco)
+          /*
+          * Calcular */
 
-    /*
-    * Calcular */
+          const tam_r: number = Math.log2(this._qtd_linhas)
 
-    const tam_r: number = Math.log2(this._qtd_linhas)
-
-    const tag : number = ((address >> tam_r) >> tam_word)
-    this.linhas[this.calcularLinha(address)].tag = tag
-    this.linhas[this.calcularLinha(address)].bloco[this.CalcularPosicaoDaPalavraNoBloco(address)] = value
-    this.ram.gravar(address, value)
+          const tag : number = ((address >> tam_r) >> tam_word)
+          this.linhas[this.calcularLinha(address)].tag = tag
+          this.linhas[this.calcularLinha(address)].bloco[this.CalcularPosicaoDaPalavraNoBloco(address)] = value
+          this.ram.gravar(address, value)
+          resolve()
+      })
   }
 
 }

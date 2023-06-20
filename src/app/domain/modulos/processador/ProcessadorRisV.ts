@@ -62,7 +62,7 @@ class RiscV {
 
     constructor() {
         //this.cache = new MemCache();
-        this.ram = new MemRAM(128);
+        this.ram = new MemRAM(128,4);
         this.inst = RISCV
         for (let i = 0; i < 32; i++) {
         this.XLEN[i] = 0;

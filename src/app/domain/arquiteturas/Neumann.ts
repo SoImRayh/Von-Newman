@@ -161,7 +161,7 @@ export const NEWMAN: Instruction[] = [
           else if (processador.GPR[processador.RO0] < processador.GPR[processador.RO1])
           {
             processador.L = 1;
-          } 
+          }
           else if (processador.GPR[processador.RO0] > processador.GPR[processador.RO1])
           {
             processador.G = 1;
@@ -183,7 +183,7 @@ export const NEWMAN: Instruction[] = [
         return new Promise(resolve => {
           processador.RO0 = (processador.MBR & 0x00e00000) >> 21;
           processador.RO1 = (processador.MBR & 0x001c0000) >> 18;
-          resolve()
+          resolve();
         })
       },
       execute: async (processador: Processador): Promise<void> => {
@@ -461,7 +461,7 @@ export const NEWMAN: Instruction[] = [
         },
         execute: async (processador: Processador): Promise<void> => {
           return new Promise( resolve => {
-            processador.ram.buscar(processador.MAR).then( data => {
+            processador.cache.buscar(processador.MAR).then( data => {
               processador.GPR[processador.RO0] = data
               processador.PC += 4
               resolve()
@@ -486,7 +486,7 @@ export const NEWMAN: Instruction[] = [
       ,
       execute: async (processador: Processador): Promise<void> => {
         return new Promise( resolve => {
-          processador.ram.gravar(processador.MAR, processador.GPR[processador.RO0]).then( () => {
+          processador.cache.salvar(processador.MAR, processador.GPR[processador.RO0]).then( () => {
             processador.PC += 4;
             resolve()
             }

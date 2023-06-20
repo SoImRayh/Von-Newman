@@ -95,7 +95,7 @@ class Processador {
 
   constructor() {
     //todo contrutor para setar a memoria cache
-    this.cache = new CacheMapeamentoAssociativo(4,4,OverwritePolice.FIFO);
+    this.cache = new CacheMapeamentoAssociativo(4,16,OverwritePolice.FIFO);
     this.inst = NEWMAN
     for (let i = 0; i < 32; i++) {
       this.GPR[i] = 0;

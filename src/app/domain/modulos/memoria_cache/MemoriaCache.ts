@@ -13,5 +13,5 @@ export interface MemoriaCache {
   getMissRatio: () => number
 
   //apenas para fins de teste
-  salvar: (address: number, value: number) => void
+  salvar: (address: number, value: number) => Promise<void>
 }

@@ -24,7 +24,7 @@ export function Registrador(props : RegistradorProps){
         {props.nome}
       </div>
       <div className={'px-4'}>
-        0x{props.value.toString(16)}
+        0x{props.value.toString(2)}
       </div>
     </div>
   </div>
