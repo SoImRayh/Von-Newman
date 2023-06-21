@@ -21,7 +21,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'addi',
     descricao: 'adds the sign-extended 12-bit immediate to register rs1',
-    opcode:0x00,
+    opcode:0b0010011,
     formato : {
       opr_qtd: 4,
       opr_tam: [5,3,5,12]
@@ -44,7 +44,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'slti',
     descricao: 'set less than immediate, places the value 1 in register rd if register rs1 is less than the immediate else 0 is written to rd',
-    opcode:0x00,
+    opcode:0b0010011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -71,7 +71,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'add',
     descricao: 'operação de soma sem sinal',
-    opcode:0x00,
+    opcode:0b0010011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -94,7 +94,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'and',
     descricao: 'operador E logico',
-    opcode:0x00,
+    opcode:0b0110011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -117,7 +117,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'or',
     descricao: 'Operador OR = ou logico',
-    opcode:0x00,
+    opcode:0b0110011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -140,7 +140,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'xor',
     descricao: 'Operador XOR = ou exclusivo logico',
-    opcode:0x00,
+    opcode:0b0110011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -163,7 +163,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'srli',
     descricao: 'Deslocamneto de bits a direita, SRLI is a logical right shift (zeros are shifted into the upper bits)',
-    opcode:0x00,
+    opcode:0b0010011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -186,7 +186,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'srai',
     descricao: 'SRAI is an arithmetic right shift (the original sign bit is copied into the vacated upper bits)',
-    opcode:0x00,
+    opcode:0b0010011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -209,7 +209,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'slli',
     descricao: 'SLLI is a logical left shift (zeros are shifted into the lower bits)',
-    opcode:0x00,
+    opcode:0b0010011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -232,7 +232,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'lui',
     descricao: 'LUI (load upper immediate) places immediate value in the top 20 bits of the destination register rd',
-    opcode:0x00,
+    opcode:0b0110111,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -254,7 +254,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'auipc',
     descricao: 'AUIPC (add upper immediate to pc) then places the result in register rd.',
-    opcode:0x00,
+    opcode:0b0010111,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -276,7 +276,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'sll',
     descricao: 'SLL perform logical left',
-    opcode:0x00,
+    opcode:0b0110011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -299,7 +299,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'srl',
     descricao: 'SRL perform a logical right',
-    opcode:0x00,
+    opcode:0b0110011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -322,7 +322,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'jal',
     descricao: 'JAL (jump) stores the address of the instruction following the jump (pc+4) into register rd',
-    opcode:0x00,
+    opcode:0b1101111,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -343,7 +343,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'jalr',
     descricao: 'JALR (jump and link register)',
-    opcode:0x00,
+    opcode:0b1100111,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -367,7 +367,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'beq',
     descricao: 'BEQ take the branch if registers rs1 and rs2 are equal or unequal respectively',
-    opcode:0x00,
+    opcode:0b1100011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -392,7 +392,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'blt',
     descricao: 'BLT take the branch if rs1 is less than rs2',
-    opcode:0x00,
+    opcode:0b1100011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -417,7 +417,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'bge',
     descricao: 'take the branch if rs1 is greater than or equal to rs2',
-    opcode:0x00,
+    opcode:0b1100011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -440,7 +440,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'lw',
     descricao: 'The LW instruction loads a 32-bit value from memory into rd',
-    opcode:0x00,
+    opcode:0b0000011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -455,15 +455,18 @@ export const RISCV: Instruction[] = [
     },
     execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
-        RiscV.RD = RiscV.IMM
-        resolve()
+        RiscV.ram.buscar(RiscV.RD).then( data => {
+          RiscV.XLEN[RiscV.RS1] = data
+          RiscV.PC += 4
+          resolve()
+        })
       })
     },
   },
   {
     nome: 'lh',
     descricao: 'LH loads a 16-bit value from memory, then sign-extends to 32-bits before storing in rd',
-    opcode:0x00,
+    opcode:0b0000011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -478,14 +481,18 @@ export const RISCV: Instruction[] = [
     },
     execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
+        RiscV.ram.buscar(RiscV.RD).then( data => {
+          RiscV.XLEN[RiscV.RS1] = data
+          RiscV.PC += 2
           resolve()
+        })
       })
     },
   },
   {
     nome: 'lhu',
     descricao: 'LHU loads a 16-bit value from memory but then zero extends to 32-bits before storing in rd',
-    opcode:0x00,
+    opcode:0b0000011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -500,14 +507,18 @@ export const RISCV: Instruction[] = [
     },
     execute: async (RiscV: RiscV) : Promise<void> => {
       return new Promise( resolve => {
+        RiscV.ram.buscar(RiscV.RD).then( data => {
+          RiscV.XLEN[RiscV.RS1] = data
+          RiscV.PC += 2
           resolve()
+        })
       })
     },
   },
   {
     nome: 'sw',
     descricao: 'store 32-bit values from the low bits of register rs2 to memory',
-    opcode:0x00,
+    opcode:0b0100011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -534,7 +545,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'sh',
     descricao: 'store 16-bit values from the low bits of register rs2 to memory',
-    opcode:0x00,
+    opcode:0b0100011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
@@ -557,7 +568,7 @@ export const RISCV: Instruction[] = [
   {
     nome: 'sb',
     descricao: 'store 8-bit values from the low bits of register rs2 to memory',
-    opcode:0x00,
+    opcode:0b0100011,
     formato : {
       opr_qtd: NaN,
       opr_tam: []
