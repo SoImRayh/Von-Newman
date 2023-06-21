@@ -8,6 +8,7 @@ import RouterPaths from "@/render/utils/routes.json";
 import HomePage from "@/render/containers/HomePage";
 import {VMPage} from "@containers/VirtualMachineModule/VMPage";
 import {CompiladorPage} from "@containers/CompilerModule/CompiladorPage";
+import { ConfigContainer } from "@containers/ConfigContainer/ConfigContainer";
 
 const Routes = () => {
   return (
@@ -22,6 +23,7 @@ const Routes = () => {
           <Route caseSensitive path={RouterPaths.HOME} element={<HomePage />} />
           <Route caseSensitive path={'maquina'} element={<VMPage/>}/>
           <Route caseSensitive path={'/compilador'} element={<CompiladorPage/>}/>
+          <Route caseSensitive path={'/propriedades'} element={<ConfigContainer/>}/>
         </Switch>
       </Router>
     </>

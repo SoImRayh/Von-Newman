@@ -7,10 +7,10 @@ c;i;ld r1 8c
 18;i;mul r2 r1
 1c;i;ld r1 84
 20;i;add r1 r2
-24;i;st r1 82
+24;i;st r1 84
 28;i;hlt
 84;d;20
 88;d;2
-8c;d;4
+8c;d;24
 90;d;8
 94;d;2

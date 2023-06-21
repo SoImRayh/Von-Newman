@@ -3,8 +3,15 @@ import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
 
 export interface MemoriaCache {
 
-  linhas: Linha[]
-  ram: MemRAM
+    _total_de_hits: number;
+    _total_de_misses: number;
+    _total_de_buscas: number;
+    linhas: Linha[]
+    ram: MemRAM
+    latencias: {
+        self: number,
+        ram: number
+    }
 
   buscar: (address: number) => Promise<number>
 

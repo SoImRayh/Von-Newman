@@ -12,6 +12,8 @@ import {
 import countReducer from "./reducers/count";
 import charReducer from "./reducers/characters";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { counterSlice } from "@redux/reducers/counterSlice";
+import { globalProps } from "@redux/reducers/globalProps";
 
 // Persistance Config for redux-persist
 const persistConfig = {
@@ -36,14 +38,18 @@ const persistConfig = {
 const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
-    counter: countReducer,
-    char: charReducer,
+      counter: countReducer,
+      char: charReducer,
+
   })
 );
 
 // Create our store
 export const store = configureStore({
-  reducer: { example: persistedReducer },
+  reducer: { example: persistedReducer,
+    counter: counterSlice.reducer,
+      globalProps: globalProps.reducer
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

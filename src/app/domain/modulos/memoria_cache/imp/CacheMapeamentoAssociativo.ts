@@ -13,8 +13,8 @@ export enum OverwritePolice {
 export class CacheMapeamentoAssociativo implements MemoriaCache {
     ram: MemRAM;
     linhas: Linha[] = [];
+    latencias;
     _tam_campo_word: number;
-    _tam_campo_bloco: number;
     _qtd_linhas: number;
     _tam_bloco: number;
     _overwrite_police: OverwritePolice;
@@ -22,7 +22,7 @@ export class CacheMapeamentoAssociativo implements MemoriaCache {
     _total_de_misses: number;
     _total_de_buscas: number;
 
-    constructor(qtd_linhas: number, tam_bloco: number, overidePolice: OverwritePolice) {
+    constructor(qtd_linhas: number, tam_bloco: number, overidePolice: OverwritePolice, latencias: {self: number, ram: number}, ramSize: number) {
         this._total_de_buscas = 0
         this._total_de_misses = 0
         this._total_de_hits = 0
@@ -30,7 +30,8 @@ export class CacheMapeamentoAssociativo implements MemoriaCache {
         this._tam_bloco = tam_bloco;
         this._tam_campo_word = Math.log2(tam_bloco);
         this._overwrite_police = overidePolice;
-        this.ram = new MemRAM(512, tam_bloco)
+        this.ram = new MemRAM(ramSize, tam_bloco)
+        this.latencias = latencias
 
         for (let i = 0; i < qtd_linhas; i++) {
             this.linhas.push(new Linha(tam_bloco));
@@ -55,14 +56,14 @@ export class CacheMapeamentoAssociativo implements MemoriaCache {
                 (linha) => linha.tag == campo_tag
             );
 
-            if (linha && linha.bloco[0x0] != 0x0) {
+            if (linha && !isNaN(linha.tag)) {
                 this._total_de_hits++
                 linha.count++;
                 bit_word = linha.bloco[campo_word]
                 for (let i = 1; i < 4; i++) {
                     bit_word = (bit_word << 8) | linha.bloco[campo_word + i]
                 }
-                await this.latencia(500)
+                await this.latencia(this.latencias.self)
                 resolve(bit_word)
             } else {
                 this._total_de_misses++
@@ -75,7 +76,7 @@ export class CacheMapeamentoAssociativo implements MemoriaCache {
                     for (let i = 1; i < 4; i++) {
                         bit_word = (bit_word << 8) | nova_linha.bloco[campo_word + i]
                     }
-                    await this.latencia(2000)
+                    await this.latencia(this.latencias.ram)
                     resolve(bit_word)
                 }
             }
@@ -100,6 +101,8 @@ export class CacheMapeamentoAssociativo implements MemoriaCache {
             );
 
             if (linha) {
+                console.log('salvando o valor: ', value,'\t no endereço: ', address);
+                console.log('tag: ', tag);
                 linha.bloco[word] = value & Mascaras.BYTE_0;
                 linha.bloco[word+1] = value & Mascaras.BYTE_1
                 linha.bloco[word+2] = value & Mascaras.BYTE_2

@@ -9,6 +9,8 @@ export class Linha {
       this.is_Altered = false
       if ((tag && !isNaN(tag) || tag == 0x0)){
           this.tag = tag
+      }else{
+          this.tag = 0xffffffff
       }
       if (data){
           data.forEach( valor => {

@@ -1,7 +1,4 @@
-import Processador from "@/app/domain/modulos/processador/Processador";
-import { Registrador } from "@components/Registrador/Registrador";
-import { useEffect, useState } from "react";
-import { ClockTime } from "@/app/domain/Clocks";
+
 import {Link} from "react-router-dom";
 
 const HomePage = () => {
@@ -35,6 +32,9 @@ const HomePage = () => {
             VM
           </Link>
         </div>
+          <Link
+          to={'/propriedades'}
+          > Propriedades</Link>
       </div>
     </>
   );
