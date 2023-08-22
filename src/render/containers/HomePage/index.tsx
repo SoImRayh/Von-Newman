@@ -33,8 +33,10 @@ const HomePage = () => {
           </Link>
         </div>
           <Link
+            className={'text-white text-xl font-mono px-4 py-2 border border-md rounded-md text-center'+
+              ' hover:bg-white hover:text-zinc-800'}
           to={'/propriedades'}
-          > Propriedades</Link>
+          > config</Link>
       </div>
     </>
   );

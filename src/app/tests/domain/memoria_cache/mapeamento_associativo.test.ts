@@ -19,7 +19,7 @@ describe("Cache de mapeamento associativo", function() {
     })
 
   test(`testando salvar e buscar o valor da cache`, () => {
-    const cache: MemoriaCache = new CacheMapeamentoAssociativo(4,4, OverwritePolice.FIFO)
+    const cache: MemoriaCache = new CacheMapeamentoAssociativo(4,4, OverwritePolice.FIFO, {self: 100, ram: 1000}, 512)
     cache.salvar(2, 15)
     cache.buscar(2).then( val => {
       expect(val).toBe(15)
@@ -27,7 +27,7 @@ describe("Cache de mapeamento associativo", function() {
   })
 
   test('testando algoritmo de sobreescrita FIFO', () => {
-    const cache: MemoriaCache = new CacheMapeamentoAssociativo(4,4,OverwritePolice.FIFO)
+    const cache: MemoriaCache = new CacheMapeamentoAssociativo(4,4,OverwritePolice.FIFO, {self: 100, ram: 1000}, 512)
 
     for (let i = 0; i < 16; i++) {
       cache.salvar(i, i*2)

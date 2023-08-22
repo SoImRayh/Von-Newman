@@ -46,19 +46,6 @@ function criar_janela_de_configuracao() {
 const createWindow = (): void => {
   const windows = new Set();
 
-  const MAINMENU = [
-    {
-      label: "configurar",
-      submenu: [
-        {
-          label: "Propriedades",
-          click () {
-            criar_janela_de_configuracao()
-          }
-        }
-      ]
-    }
-  ]
 
 
   // Create the browser window.
@@ -83,7 +70,7 @@ const createWindow = (): void => {
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  Menu.setApplicationMenu(Menu.buildFromTemplate(MAINMENU))
+  Menu.setApplicationMenu(null)
 
   // Open the DevTools if in dev.
   if (isDev) {

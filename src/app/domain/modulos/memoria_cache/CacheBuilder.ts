@@ -15,7 +15,8 @@ export const CacheBuilder = {
 
         switch (props.cacheType) {
             case CacheTypes.MAPEAMENTO_DIRETO:{
-                cache = new CacheMapeamentoDireto()
+                //todo passar props adequadas
+                cache = new CacheMapeamentoDireto(4,4,)
                 break
             }
             case CacheTypes.MAPEAMENTO_ASSOCIATIVO:{

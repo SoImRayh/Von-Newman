@@ -1,6 +1,5 @@
 import { MemoriaCache } from "@/app/domain/modulos/memoria_cache/MemoriaCache";
 import { MemRAM } from "@/app/domain/modulos/memoria_ram/MemRAM";
-import { add } from "husky";
 import { Linha } from "@/app/domain/modulos/memoria_cache/imp/types/Linha";
 import { Mascaras } from "@/app/domain/utils/Mascaras";
 
@@ -37,6 +36,13 @@ export class CacheMapeamentoAssociativo implements MemoriaCache {
             this.linhas.push(new Linha(tam_bloco));
         }
     }
+
+    restart(): void {
+        this._total_de_buscas = 0;
+        this._total_de_misses = 0;
+        this._total_de_hits = 0;
+
+    };
     private async latencia(time :number){
         return new Promise<void>(resolve => {
             setTimeout(() => {

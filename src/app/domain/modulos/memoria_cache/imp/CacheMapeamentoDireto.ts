@@ -37,6 +37,13 @@ export class CacheMapeamentoDireto implements MemoriaCache {
     }
 
   }
+
+  restart: () => void;
+
+  _total_de_hits: number;
+    _total_de_misses: number;
+    _total_de_buscas: number;
+    latencias: { self: number; ram: number; };
   buscar(address: number): Promise<number> {
 
     this.linhas.forEach(linha => {

@@ -10,7 +10,7 @@ interface RegistradorProps{
 export function Registrador(props : RegistradorProps){
 
 
-  let tam: string = props.nome == 'MBR'? 'w-full' :'w-52';
+  let tam: string = props.nome == 'MBR'? 'w-96' :'w-52';
   let detailColor: string = 'w-14 rounded-r text-center ';
 
 
@@ -18,13 +18,13 @@ export function Registrador(props : RegistradorProps){
     detailColor =  detailColor.concat(props.detailColor) : detailColor =  detailColor.concat('bg-primary')
 
   return (
-  <div className={'tooltip w-full'} data-tip={''}>
+  <div className={'tooltip tooltip-top '} data-tip={props.value}>
     <div className={'flex flex-row g-gray-500b rounded-r border text-white '+ tam}>
-      <div className={detailColor}>
-        {props.nome}
+      <div className={ detailColor }>
+        { props.nome }
       </div>
       <div className={'px-2'}>
-        {props.value.toString(2)}
+        { props.value.toString(2) }
       </div>
     </div>
   </div>

@@ -130,9 +130,8 @@ class Processador {
         return new Promise((resolve) => {
             this.PC = 0;
             this.MBR = 0;
-
             this.GPR.forEach( reg => reg == 0x0 ? reg : 0x0)
-
+            this.cache.restart()
             resolve();
         });
     }
