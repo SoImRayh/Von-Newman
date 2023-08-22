@@ -46,28 +46,59 @@ export function ConfigContainer(props: ConfigContainerProps) {
         )
     }
     function cacheForm(){
+
         if (vmProps.cacheType == CacheTypes.MAPEAMENTO_ASSOCIATIVO){
             return (
-                <div className={'flex gap-4'}>
-                    {
-                        input({
-                            name: '_qtd_linhas',
-                            value: vmProps._qtd_linhas,
-                            type: 'number',
-                            label: 'quantidade de linhas'
-                        })
-                    }
-                    {
-                        input({
-                            name: '_tam_bloco',
+              <div className={'flex gap-4'}>
+                  {
+                      input({
+                          name: '_qtd_linhas',
+                          value: vmProps._qtd_linhas,
+                          type: 'number',
+                          label: 'quantidade de linhas'
+                      })
+                  }
+                  {
+                      input({
+                          name: '_tam_bloco',
+                          value: vmProps._tam_bloco,
+                          type: 'number',
+                          label: 'Tamanho do bloco de cada linha'
+                      })
+                  }
+              </div>
+            )
+        }else if(vmProps.cacheType == CacheTypes.MAPEAMENTO_ASSOCIATIVO_POR_CONJUNTO){
+            return (
+              <div>
+                  mapeamento associativo por conjunto
+              </div>
+            )
+        }else if(vmProps.cacheType == CacheTypes.MAPEAMENTO_DIRETO){
+            return (
+              <div className={'flex gap-4'}>
+                  {
+                      input({
+                          name: "_qtd_linhas",
+                          value: vmProps._qtd_linhas,
+                          label: "Quantidade de linhas",
+                          type: 'number'
+                      })
+                  }
+                  {
+                      input(
+                        {
+                            name: "_tam_bloco",
                             value: vmProps._tam_bloco,
-                            type: 'number',
-                            label: 'Tamanho do bloco de cada linha'
-                        })
-                    }
-                </div>
+                            label: "Tamanho de cada bloco (bytes)",
+                            type: 'number'
+                        }
+                      )
+                  }
+              </div>
             )
         }
+
     }
 
     return (
@@ -79,13 +110,13 @@ export function ConfigContainer(props: ConfigContainerProps) {
                     input({
                         name: 'ram_bytesize',
                         value: vmProps.ram_bytesize,
-                        label: "Tamanho da memória ram",
+                        label: "Tamanho da memória ram (bytes)",
                         type: "number"
                     })
                 }
             </div>
             <div className={'card w-96 shadow-xl'}>
-                <span className={'text-lg text-white font-mono'}>Tempo de acesso a memória</span>
+                <span className={'text-lg text-white font-mono'}>Tempo de acesso a memória (ms)</span>
                 <div className={'flex gap-4'}>
                     {
                         input({
@@ -106,7 +137,7 @@ export function ConfigContainer(props: ConfigContainerProps) {
                     }
                 </div>
             </div>
-            <div>
+            <div className={'mt-4'}>
                 <select name="cache_type"
                         id="cache_type"
                         className={'select select-bordered select-primary select-md'}
@@ -125,7 +156,6 @@ export function ConfigContainer(props: ConfigContainerProps) {
                         )
                     }
                 </select>
-
                 {cacheForm()}
             </div>
 

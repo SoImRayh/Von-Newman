@@ -14,9 +14,10 @@ export class CacheMapeamentoDireto implements MemoriaCache {
    linhas: Linha[]
    _tam_bloco: number;
    _qtd_linhas: number;
-   _totalDeBuscas: number = 0;
-   _totalDeMiss: number = 0;
-   _totalDeHit: number = 0;
+   _total_de_hits: number = 0;
+   _total_de_misses: number;
+   _total_de_buscas: number;
+   latencias: { self: number; ram: number; };
 
   constructor(qtd_linhas: number, tam_bloco: number, ram?: MemRAM) {
 
@@ -39,42 +40,43 @@ export class CacheMapeamentoDireto implements MemoriaCache {
   }
 
   restart: () => void;
-
-  _total_de_hits: number;
-    _total_de_misses: number;
-    _total_de_buscas: number;
-    latencias: { self: number; ram: number; };
   buscar(address: number): Promise<number> {
-
-    this.linhas.forEach(linha => {
-      console.log(linha)
-    })
+    this._total_de_buscas++
     return new Promise( (resolve) => {
 
-      const bloco: number = this.calcularBloco( address )
       const pos_palavra_no_bloco: number =
-        this.CalcularPosicaoDaPalavraNoBloco( address )
+        this.calcularPosicaoDaPalavraNoBloco( address )
       const linha = this.calcularLinha( address )
-      const bloco_TARGET = this.linhas[linha]
 
-      if(this.calctag(address) == bloco_TARGET.tag){
-        this._totalDeHit++
-        resolve(bloco_TARGET.bloco[pos_palavra_no_bloco])
+      //Se as tag's forem identicas é hit de cache
+      if(this.calcular_tag_do_endereco(address) == this.linhas[linha].tag){
+        this._total_de_hits++
+        resolve(this.linhas[linha].bloco[pos_palavra_no_bloco])
       }else {
+        this._total_de_misses++
 
+        ///Verificando se a linha foi alterada, se sim, deve ser persistido o bloco;
+        if (this.linhas[linha].is_Altered)
+          this.ram.persistirBloco(
+            this.linhas[linha].bloco[0],
+            this.linhas[linha].bloco
+          )
+
+        //Buscando um novo bloco da memória ram, e salvando-o na devida linha
+        this.ram.buscarBloco(address).then( bloco => {
+          this.linhas[linha] = new Linha(
+            this._tam_bloco,
+            this.calcular_tag_do_endereco(address),
+            bloco
+          )
+        })
+
+        resolve(this.linhas[linha].bloco[pos_palavra_no_bloco])
       }
-      //TODO implementar a busca
-      //if address está na cache, _totalDeBuscas++ e _totaldeHit++
-      //else _totalDeBuscas++ e _totalDeMiss++
-
-      this._totalDeBuscas++
-      this._totalDeMiss++
-      this._totalDeHit++
-      resolve(NaN)
     });
   }
 
-  private calctag(address: number): number {
+  private calcular_tag_do_endereco(address: number): number {
 
     const tam_word: number = Math.log2(this._tam_bloco)
     const tam_r: number = Math.log2(this._qtd_linhas)
@@ -96,7 +98,7 @@ export class CacheMapeamentoDireto implements MemoriaCache {
       * A posição da palavra no bloco é calculada a partir do resto da divisao
       * do endereço pelo tamanho do bloco
       * */
-  private CalcularPosicaoDaPalavraNoBloco(address: number){
+  private calcularPosicaoDaPalavraNoBloco(address: number){
     return address % this._tam_bloco
   }
 
@@ -109,11 +111,11 @@ export class CacheMapeamentoDireto implements MemoriaCache {
   }
 
   getHitRatio(): number {
-    return this._totalDeHit / this._totalDeBuscas;
+    return this._total_de_hits / this._total_de_buscas;
   }
 
   getMissRatio(): number {
-    return this._totalDeMiss / this._totalDeBuscas;
+    return this._total_de_misses / this._total_de_buscas;
   }
 
   getTotalSize(): number {
@@ -124,26 +126,39 @@ export class CacheMapeamentoDireto implements MemoriaCache {
     return this.linhas
   }
 
-
-  //TODO remover assim que acabar as implementações
+  /*
+  * A implementação de salvar um novo valor é:
+  * -> Definir a tag
+  * -> verificar se a linha com a tag está na cache
+  *   -> se sim, apenas alterar o bloco
+  *   -> se não, salvar a linha existente ( se alterada ), e substituir por uma nova
+  * */
   salvar(address: number, value: number): Promise<void> {
-      return new Promise<void>((resolve, reject) => {
-          /*
-* Calcular o a quantidade de bits destinados a palavra em um endereço
-* */
-          const tam_word: number = Math.log2(this._tam_bloco)
+      return new Promise<void>((resolve) => {
+        const linha : number = this.calcularLinha( address )
+        const tag : number = this.calcular_tag_do_endereco( address )
 
-          /*
-          * Calcular */
+        if (this.linhas[linha].tag == tag){
+          this.linhas[linha].bloco[this.calcularPosicaoDaPalavraNoBloco( address )] = value
+          this.linhas[linha].is_Altered = true
+        }else{
+          if (this.linhas[linha].is_Altered){
+            this.ram.persistirBloco(address, this.linhas[linha].bloco)
+            this.ram.buscarBloco( address ).then( bloco => {
+              this.linhas[linha] = new Linha( this._tam_bloco, tag, bloco )
+            })
+          }else{
+            this.ram.buscarBloco( address ).then( bloco => {
+              this.linhas[linha] = new Linha( this._tam_bloco, tag, bloco)
+            })
+          }
 
-          const tam_r: number = Math.log2(this._qtd_linhas)
-
-          const tag : number = ((address >> tam_r) >> tam_word)
-          this.linhas[this.calcularLinha(address)].tag = tag
-          this.linhas[this.calcularLinha(address)].bloco[this.CalcularPosicaoDaPalavraNoBloco(address)] = value
-          this.ram.gravar(address, value)
-          resolve()
+          this.linhas[linha].bloco[this.calcularPosicaoDaPalavraNoBloco( address )] = value
+          this.linhas[linha].is_Altered = true
+        }
+        resolve()
       })
   }
+
 
 }
