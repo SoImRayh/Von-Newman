@@ -72,7 +72,6 @@ class RiscV {
     async busca(): Promise<void> {
         return new Promise(resolve => {
           if (this.cache) {
-            console.log("tem cache");
             resolve()
           } else {
             setTimeout(() => {
@@ -93,8 +92,9 @@ class RiscV {
           const inst: Instruction | undefined = this.inst.find(instruction => instruction.opcode == opcode)
           if (inst &&  inst.nome != 'hlt'){
             this.IR = inst
-            await this.IR.decode(this);
-            resolve(0)
+            await this.IR.decode.then(
+              () => resolve(0)
+            );
           }else{
 
             reject(1);
@@ -105,7 +105,9 @@ class RiscV {
       async executa(): Promise<void> {
         return new Promise(async resolve => {
           if (this.IR)
-            await this.IR.execute(this)
+            { // @ts-ignore
+              await this.IR.execute(this)
+            }
             resolve()
         })
       }

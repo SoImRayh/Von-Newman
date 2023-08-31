@@ -113,12 +113,14 @@ export function VMPage() {
     function memoria_cache(cache: MemoriaCache) {
         return cache.linhas.map((linha, index) => {
             return (
-              <div className={`flex flex-col card`}>
-                  <div className=" flex flex-col text-lg text-white bg-primary px-4">
+              <div className={`flex flex-col card text-sm`}>
+                  <div className=" flex flex-col text-md text-white bg-primary px-4">
                         <span className="w-full">
                             {index}| tag:{" "}
-                            {linha.tag == 0xffffffff ? "NaN" : linha.tag}
                         </span>
+                      <span>
+                          {linha.tag == 0xffffffff ? "NaN" : linha.tag}
+                      </span>
                       <span className={"w-full"}>
                             isAltered:{linha.is_Altered ? " yes" : " no"}
                         </span>
@@ -148,7 +150,7 @@ export function VMPage() {
                 { debug ? null :
                   (<button
                     onClick={(e) => handleStart(e)}
-                    className={"btn bg-green-600 "}
+                    className={"btn btn-primary "}
                   >
                       <BsFillPlayFill className={'fill-white'}/>
                   </button>)
@@ -283,7 +285,9 @@ export function VMPage() {
                                 </div>
                                 <div className={'flex flex-col'}>
                                     <div>
-                                        cache| hits: {processador.cache._total_de_hits} misses: {processador.cache._total_de_misses} buscas totais: {processador.cache._total_de_buscas}
+                                        cache| <span className={'text-[#00ff00]'}>hits</span>: {processador.cache._total_de_hits}
+                                        <span className={'text-[#ff0000]'}> misses </span>: {processador.cache._total_de_misses}
+                                         <span> buscas totais </span>: {processador.cache._total_de_buscas}
                                     </div>
                                     <div className={"overflow-x-auto overflow-y-auto h-[440px] w-full flex gap-2"}>
                                         {memoria_cache(processador.cache)}

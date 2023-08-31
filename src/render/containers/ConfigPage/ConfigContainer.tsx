@@ -37,10 +37,10 @@ export function ConfigContainer(props: ConfigContainerProps) {
                     <span className={'label-text-alt'}>{props.label? props.label  : null}</span>
                 </label>
                 <input
-                    type={props.type? props.type : 'number'}
-                    name={props.name}
+                    type={ props.type ? props.type : 'number'}
+                    name={ props.name }
                     className={'input input-bordered input-primary w-full max-w-xl'}
-                    value={props.value}
+                    value={ props.value }
                     onChange={(event) => handleInputChange(event)}/>
             </div>
         )
@@ -160,7 +160,7 @@ export function ConfigContainer(props: ConfigContainerProps) {
             </div>
 
 
-            <button className={'btn btn-primary'}
+            <button className={'btn btn-primary mt-4+++++'}
                 onClick={() => salvar()}
             > Salvar</button>
         </div>

@@ -31,7 +31,7 @@ export function CompiladorPage() {
         <div className={" min-h-screen text-white"}>
             <NavBar />
             <div>
-                <div className={"grid grid-cols-3"}>
+                <div className={"flex-col"}>
                     <div className={"min-w-full"}>
                         <div>
                             <div className="mb-3 w-96">
@@ -52,8 +52,7 @@ export function CompiladorPage() {
                         </div>
                     </div>
                     <div
-                        className={"rounded-2xl col-span-2 border-2 border-white px-4 py-3 h-full"}
-                    >
+                        className={"rounded-2xl col-span-2 border-2 border-white px-4 py-3 h-full"}>
                         <div>
                             <h1>Compilação</h1>
                             <div className={"w-full overflow-x-auto"}>
